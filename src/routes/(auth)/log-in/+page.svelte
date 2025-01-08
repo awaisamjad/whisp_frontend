@@ -31,7 +31,7 @@
 	}
 </script>
 
-<div class="flex flex-col justify-center items-center font-[sans-serif] sm:h-screen p-4">
+<!-- <div class="flex flex-col justify-center items-center font-[sans-serif] sm:h-screen p-4">
 	<div class="flex flex-col bg-secondary p-10 rounded-md">
 		<h1 class="text-[42px] text-text mb-10">Log In</h1>
 		<form on:submit|preventDefault={handleSubmit} class="w-[500px] rounded-sm">
@@ -67,6 +67,46 @@
 					href="/sign-up"
 					class=" text-slate-400 font-semibold underline hover:underline ml-1">Sign Up</a
 				>
+			</p>
+		</form>
+	</div>
+</div> -->
+
+<div class="flex flex-col justify-center items-center font-[sans-serif] min-h-screen p-4 sm:h-screen sm:w-[36rem]">
+	<div class="flex flex-col bg-secondary p-6 sm:p-10 rounded-md w-full max-w-lg">
+		<h1 class="text-3xl sm:text-[42px] text-text mb-6 sm:mb-10">Log In</h1>
+		<form on:submit|preventDefault={handleSubmit} class="w-full">
+			<div class="space-y-6">
+				<div class="field">
+					<input
+						type="email"
+						class="input variant-plain sz-md w-full"
+						placeholder="Email"
+						bind:value={user.email}
+						required
+					/>
+				</div>
+				<div>
+					<input
+						name="password"
+						type="password"
+						class="input w-full"
+						placeholder="Password"
+						bind:value={user.password}
+						required
+					/>
+				</div>
+				<p class="text-red-500">{error_message}</p>
+			</div>
+			<div class="mt-6 sm:mt-10">
+				<button type="submit" class="btn w-full">
+					<span>Log In</span>
+				</button>
+			</div>
+			<p class="text-gray-400 text-sm mt-4 sm:mt-6 text-center">
+				Dont have an account? <a
+					href="/sign-up"
+					class="text-slate-400 font-semibold underline hover:underline ml-1">Sign Up</a>
 			</p>
 		</form>
 	</div>

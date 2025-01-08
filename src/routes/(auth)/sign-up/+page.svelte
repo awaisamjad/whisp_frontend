@@ -36,10 +36,10 @@
 	}
 </script>
 
-<div class="flex flex-col justify-center items-center font-[sans-serif] sm:h-screen p-4">
-	<div class="flex flex-col bg-secondary p-10 rounded-md">
-		<h1 class="text-[42px] text-text mb-10">Create an account</h1>
-		<form on:submit|preventDefault={handleSubmit} class="w-[500px] rounded-sm">
+<div class="flex flex-col justify-center items-center font-[sans-serif] min-h-screen p-4 sm:h-screen">
+	<div class="flex flex-col bg-secondary p-6 sm:p-10 rounded-md w-full max-w-lg">
+		<h1 class="text-3xl sm:text-[42px] text-text mb-6 sm:mb-10">Sign Up</h1>
+		<form on:submit|preventDefault={handleSubmit} class="w-full rounded-sm">
 			<div class="space-y-6">
 				<div class="flex flex-row items-center field justify-center gap-2">
 					<input
