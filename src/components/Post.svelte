@@ -1,10 +1,18 @@
-<script>
-    export let username = "Username";
-    export let handle = "@handle";
-    export let time = "1h";
-    export let text_content = "This is a sample tweet content.";
-    export let image_content = '';
-    export let avatar = "https://via.placeholder.com/50";
+<script lang="ts">
+    // export let username = "Username";
+    // export let handle = "@handle";
+    // export let time = "1h";
+    // export let text_content = "This is a sample tweet content.";
+    // export let image_content = '';
+    // export let avatar = "https://via.placeholder.com/50";
+    let {
+        username = "",
+        handle = "@handle",
+        time = "1h",
+        text_content = "Text Content",
+        image_content = "",
+        avatar = "https://via.placeholder.com/50",
+    } = $props();
 </script>
 
 <div class="border border-gray-300 p-4 flex items-start">
@@ -21,7 +29,7 @@
             {text_content}
         </div>
         <div class="mt-1">
-            <img src="{image_content}" alt="">
+            <img src={image_content} alt="" />
         </div>
     </div>
 </div>
