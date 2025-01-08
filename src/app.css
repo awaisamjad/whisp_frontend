@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+    :root {
+        --color-primary: #1f2937;
+        --color-secondary: #374151;
+        --color-tertiary: #ECDFCC;
+        --color-text: #ECDFCC;
+        --color-text-error: #7a0909;
+    }
+
+    * {
+        @apply text-text;
+    }
+
+    body {
+        @apply bg-gray-900 text-tertiary;
+    }
+}
+
+@layer components {
+    .input {
+        @apply bg-primary border border-gray-600 w-full px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-tertiary focus:border-transparent;
+    }
+
+    .btn {
+        @apply w-full py-3 px-4 bg-primary text-white rounded-md focus:outline-none focus:ring-2 focus:ring-text focus:border-transparent;
+    }
+
+}
