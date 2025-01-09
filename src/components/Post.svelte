@@ -25,11 +25,11 @@
             <span class="text-gray-600 mr-2">{handle}</span>
             <span class="text-gray-600">{time}</span>
         </div>
-        <div class="mt-1">
-            <img src={image_content} alt="" />
-        </div>
         <div class="mt-3">
             {text_content}
+        </div>
+        <div class="mt-3">
+            <img src={image_content} alt="" />
         </div>
     </div>
 </div>

@@ -6,6 +6,24 @@
 	const slots = initSlots();
 
 	let showSidebar = $state(false);
+
+	import { onMount } from "svelte";
+
+	let footer: HTMLElement;
+	let mainContent: HTMLElement;
+
+	onMount(() => {
+		let lastScrollTop = 0;
+		mainContent.addEventListener("scroll", () => {
+			let scrollTop = mainContent.scrollTop;
+			if (scrollTop > lastScrollTop) {
+				footer.style.transform = "translateY(100%)"; // Hide footer
+			} else {
+				footer.style.transform = "translateY(0)"; // Show footer
+			}
+			lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+		});
+	});
 </script>
 
 <!-- <div class="grid h-screen grid-rows-[auto_1fr_auto] grid-cols-[1fr_3fr_1fr]">
@@ -54,9 +72,11 @@
 	</aside>
 </div> -->
 
-<div class="grid h-screen grid-rows-[auto_1fr] grid-cols-1
+<div
+	class="grid h-screen grid-rows-[auto_1fr_auto] grid-cols-1
 	sm:grid-rows-[auto_1fr_auto] sm:grid-cols-[1fr_3fr_1fr]
-">
+"
+>
 	{@render children()}
 
 	<nav
@@ -67,18 +87,14 @@
 			onclick={() => {
 				showSidebar = true;
 			}}
-			class="col-span-1 sm:hidden flex place-content-left w-9 outline"
+			class="col-span-1 sm:hidden flex place-content-left w-9"
 		>
 			<img src="menu.svg" alt="Toggle Sidebar" />
 		</button>
 
 		<!-- Image for larger screens -->
-		<div class="hidden sm:block col-span-1 w-10 outline">
-			<img
-				src="favicon.png"
-				alt="Larger Screen"
-				class="w-full h-auto"
-			/>
+		<div class="hidden sm:block col-span-1 w-10">
+			<img src="favicon.png" alt="Larger Screen" class="w-full h-auto" />
 		</div>
 
 		<!-- Logo -->
@@ -267,8 +283,8 @@
 		</aside>
 	{/if}
 
-	<aside
-		class="hidden sm:block bg-gray-800 border-r-2 row-start-2 row-end-3 col-start-1 col-end-2"
+	<!-- <aside
+		class="hidden sm:block bg-gray-800 border-r-2 row-start-2 col-start-1 col-end-2"
 	>
 		{@render slots.left_sidebar()}
 	</aside>
@@ -278,8 +294,47 @@
 	</main>
 
 	<aside
-		class="hidden sm:block bg-gray-800 row-start-2 row-end-3 col-start-3 col-end-4 border-l-2"
+		class="hidden sm:block bg-gray-800 row-start-2 col-start-3 col-end-4 border-l-2"
 	>
 		{@render slots.right_sidebar()}
 	</aside>
+
+	<footer
+		class="flex flex-row items-center justify-evenly outline gap-2 h-20 transition-transform duration-300"
+		bind:this={footer}
+	>
+		<div id="feed">Feed</div>
+		<div id="explore">Explore</div>
+		<div id="search">Search</div>
+		<div id="settings">Settings</div>
+	</footer> -->
+
+	<aside
+		class="hidden sm:block bg-gray-800 border-r-2 row-start-2 col-start-1 col-end-2"
+	>
+		{@render slots.left_sidebar()}
+	</aside>
+
+	<main
+		class="bg-gray-700 row-start-2 overflow-y-auto"
+		bind:this={mainContent}
+	>
+		{@render slots.main_content()}
+	</main>
+
+	<aside
+		class="hidden sm:block bg-gray-800 row-start-2 col-start-3 col-end-4 border-l-2"
+	>
+		{@render slots.right_sidebar()}
+	</aside>
+
+	<footer
+		class="flex flex-row items-center justify-evenly outline gap-2 h-20 transition-transform duration-300"
+		bind:this={footer}
+	>
+		<div id="feed">Feed</div>
+		<div id="explore">Explore</div>
+		<div id="search">Search</div>
+		<div id="settings">Settings</div>
+	</footer>
 </div>
