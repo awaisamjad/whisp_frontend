@@ -1,5 +1,6 @@
 <script>
-	import { setSlots } from '$lib/layout-slots.svelte.js';
+	import { goto } from "$app/navigation";
+	import { setSlots } from "$lib/layout-slots.svelte.js";
 	setSlots({ main_content, left_sidebar, right_sidebar });
 
 	import Post from "../../../components/Post.svelte";
@@ -28,7 +29,8 @@
 			content: "Yet another post content example.",
 			image_content: "https://i.pravatar.cc/40?img=1",
 			avatar: "https://i.pravatar.cc/40?img=3",
-		},{
+		},
+		{
 			username: "awais",
 			handle: "@awaisamjad",
 			time: "2h",
@@ -52,7 +54,8 @@
 			content: "Yet another post content example.",
 			image_content: "https://i.pravatar.cc/40?img=1",
 			avatar: "https://i.pravatar.cc/40?img=3",
-		},{
+		},
+		{
 			username: "awais",
 			handle: "@awaisamjad",
 			time: "2h",
@@ -81,7 +84,34 @@
 </script>
 
 {#snippet left_sidebar()}
-	Left Sidebar
+	<div class="outline h-full flex flex-col items-center justify-center gap-1">
+		<a
+			href="/feed"
+			class=" hover:bg-slate-600 w-full h-16 flex items-center justify-center text-xl rounded text"
+			>Hello</a
+		>
+		<a
+			href="/feed"
+			class=" hover:bg-slate-600 w-full h-16 flex items-center justify-center text-xl rounded text"
+			>Hello</a
+		>
+		<a
+			href="/feed"
+			class=" hover:bg-slate-600 w-full h-16 flex items-center justify-center text-xl rounded text"
+			>Hello</a
+		>
+		<a
+			href="/feed"
+			class=" hover:bg-slate-600 w-full h-16 flex items-center justify-center text-xl rounded text"
+			>Hello</a
+		>
+		<a
+			href="/feed"
+			class=" hover:bg-slate-600 w-full h-16 flex items-center justify-center text-xl rounded text"
+			>Hello</a
+		>
+		
+	</div>
 {/snippet}
 
 {#snippet main_content()}
@@ -97,6 +127,4 @@
 	{/each}
 {/snippet}
 
-{#snippet right_sidebar()}
-	Right Sidebar
-{/snippet}
+{#snippet right_sidebar()}{/snippet}

@@ -1,18 +1,18 @@
 // src/hooks.server.ts
-import type { Handle } from '@sveltejs/kit';
+import type { Handle } from '@sveltejs/kit'
+import { themes } from '$lib/themes'
 
 export const handle: Handle = async ({ event, resolve }) => {
-    // Extract session cookie
-    const session_id = event.cookies.get('session_id');
+  const session_id = event.cookies.get('session_id')
+  const theme = event.cookies.get('theme')
 
-    // Fetch user data from session store if needed (e.g., API call to backend)
-    let user = null;
-    if (session_id) {
-        user = { username: 'example_user' }; // Replace with actual session retrieval logic
+  if (!theme || !themes.includes(theme)) {
+    return await resolve(event)
+  }
+
+  return await resolve(event, {
+    transformPageChunk: ({ html }) => {
+      return html.replace('data-theme=""', `data-theme="${theme}"`)
     }
-
-    // Add session data to locals (accessible in load functions)
-    event.locals.user = user;
-
-    return resolve(event);
-};
+  })
+}

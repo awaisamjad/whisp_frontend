@@ -24,15 +24,16 @@ export default {
     // You can use https://github.com/saadeghi/theme-change to switch between themes
     themes: [
       // You can simply select a catppuccin flavor with sane default colors
-      // catppuccin('latte'),
+      catppuccin('macchiato'),
+      catppuccin('latte'),
       // Or you can optionally specify accent colors
       // catppuccin('frappe', 'pink'),
       // Or you can optionally customize more semantic colors
-      catppuccin('macchiato', { primary: 'maroon' }),
+      // catppuccin('macchiato'),
+      // 'cupcake',
       // Values not explicitly defined will use default values
       // catppuccin('mocha', { primary: 'sky', secondary: 'rosewater' }),
       // Fallback to default theme
-      'light',
     ],
   },
 } satisfies Config;
