@@ -1,16 +1,10 @@
 <script lang="ts">
-    // export let username = "Username";
-    // export let handle = "@handle";
-    // export let time = "1h";
-    // export let text_content = "This is a sample tweet content.";
-    // export let image_content = '';
-    // export let avatar = "https://via.placeholder.com/50";
     let {
         username = "",
         handle = "@handle",
         time = "1h",
         text_content = "Text Content",
-        image_content = "",
+        image_content = "favicon.png",
         avatar = "https://via.placeholder.com/50",
     } = $props();
 </script>
@@ -29,7 +23,8 @@
             {text_content}
         </div>
         <div class="mt-3">
-            <img src={image_content} alt="" />
+            <!-- <enhanced:img src="/static/{image_content}" alt="" /> -->
+            <img src="{image_content}" alt="" />
         </div>
     </div>
 </div>

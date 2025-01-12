@@ -24,6 +24,7 @@
 				body: JSON.stringify(user),
 			});
 			const result = await response.json();
+			console.log("RESULT::::", result);
 			if (!response.ok) {
 				error_message = result.error_message || "Something went wrong";
 			} else {

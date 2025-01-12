@@ -2,6 +2,7 @@
 	import { goto } from "$app/navigation";
 	import { initSlots } from "$lib/layout-slots.svelte.js";
 	import { themes } from "$lib/themes";
+	import type { CreatePostRequest } from "../../app";
 	let { children } = $props();
 
 	const slots = initSlots();
@@ -19,26 +20,27 @@
 	}
 
 	let post_content = $state("");
-
 	async function createPost() {
 		console.log(post_content);
 		try {
+			let createPostRequest: CreatePostRequest = {
+				content: post_content,
+				user_id: "4",
+			};
+
 			const response = await fetch("http://localhost:8000/create-post", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({
-					content: post_content,
-					user_id: "4",
-				}),
+				body: JSON.stringify(createPostRequest),
 			});
 			const result = await response.json();
 			if (!response.ok) {
 				console.error(result.error_message);
 				// error_message = result.error_message || "Something went wrong";
 			} else {
-				console.error("Idk what happened");
+				console.log("Successfully created post")
 				// error_message = "";
 				// username = result.username;
 				// goto(`/${username}`);
