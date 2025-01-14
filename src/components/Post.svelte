@@ -1,5 +1,6 @@
 <script lang="ts">
     let {
+        id = "",
         username = "",
         handle = "@handle",
         time = "1h",
@@ -23,7 +24,7 @@
 </script>
 
 <a
-    href="/"
+    href="/{id}"
     class="border-t-2 border-gray-300 p-4 flex items-start hover:bg-base-300"
 >
     <div class="mr-4">
