@@ -2,7 +2,7 @@
     let { children } = $props();
 </script>
 
-<main class="flex flex-col items-center justify-center min-h-screen">
+<main class="flex flex-col items-center justify-center">
     <!-- <slot/> -->
     {@render children()}
 </main>
