@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
-
 	let error_message = "";
 	let username = "";
 	let user = {
@@ -23,18 +22,20 @@
 				},
 				body: JSON.stringify(user),
 			});
+
 			const result = await response.json();
-			console.log("RESULT::::", result);
+			console.log(result)
+			localStorage.setItem("auth_token", result.token)
+			localStorage.setItem("username", result.username)
 			if (!response.ok) {
 				error_message = result.error_message || "Something went wrong";
 			} else {
-				error_message = "";
-				username = result.username;
-				goto(`/${username}`);
+				// Redirect after successful login
+				goto(`/${result.username}`);
 			}
 		} catch (error) {
 			error_message = "Failed to connect to the server";
-			console.error("Error during sign-up:", error);
+			console.error("Error during log-in:", error);
 		}
 	}
 </script>

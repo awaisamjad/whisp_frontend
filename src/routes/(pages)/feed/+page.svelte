@@ -3,6 +3,7 @@
 	import { setSlots } from "$lib/layout-slots.svelte.js";
 	setSlots({ main_content, left_sidebar, right_sidebar });
 
+
 	import Post from "../../../components/Post.svelte";
 	let posts = [
 		{
@@ -83,37 +84,7 @@
 	];
 </script>
 
-{#snippet left_sidebar()}
-	<div class="outline h-full flex flex-col items-center justify-center gap-1">
-		<a
-			href="/feed"
-			class=" hover:bg-slate-600 w-full h-16 flex items-center justify-center text-xl rounded text"
-			>Hello</a
-		>
-		<a
-			href="/feed"
-			class=" hover:bg-slate-600 w-full h-16 flex items-center justify-center text-xl rounded text"
-			>Hello</a
-		>
-		<a
-			href="/feed"
-			class=" hover:bg-slate-600 w-full h-16 flex items-center justify-center text-xl rounded text"
-			>Hello</a
-		>
-		<a
-			href="/feed"
-			class=" hover:bg-slate-600 w-full h-16 flex items-center justify-center text-xl rounded text"
-			>Hello</a
-		>
-		<a
-			href="/feed"
-			class=" hover:bg-slate-600 w-full h-16 flex items-center justify-center text-xl rounded text"
-			>Hello</a
-		>
-		
-	</div>
-{/snippet}
-
+{#snippet left_sidebar()}{/snippet}
 {#snippet main_content()}
 	{#each posts as post}
 		<Post

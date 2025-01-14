@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from "$app/navigation";
 	import { initSlots } from "$lib/layout-slots.svelte.js";
 	import { themes } from "$lib/themes";
 	import type { CreatePostRequest } from "../../app";
@@ -40,7 +39,7 @@
 				console.error(result.error_message);
 				// error_message = result.error_message || "Something went wrong";
 			} else {
-				console.log("Successfully created post")
+				console.log("Successfully created post");
 				// error_message = "";
 				// username = result.username;
 				// goto(`/${username}`);
@@ -87,7 +86,7 @@
 
 		<!-- Logo -->
 		<div class="col-span-1 sm:col-span-1 flex place-content-center">
-			<a href="/feed" class="text-4xl font-semibold">Whisp</a>
+			<a href="/feed" class="text-4xl font-semibold"> Whisp </a>
 		</div>
 
 		<!-- Theme Changer -->
