@@ -1,22 +1,7 @@
 <script lang="ts">
-    import type { PageData } from "./$types";
+	import type { PageData } from "./$types";
 
-    let { data }: { data: PageData } = $props();
-
-    import { setSlots } from '$lib/layout-slots.svelte.js';
-	setSlots({ main_content, left_sidebar, right_sidebar });
-
+	let { data }: { data: PageData } = $props();
 </script>
 
-
-{#snippet left_sidebar()}
-	Left Sidebar Home
-{/snippet}
-
-{#snippet main_content()}
-	Main Content
-{/snippet}
-
-{#snippet right_sidebar()}
-	Right Home Sidebar
-{/snippet}
+Main Content

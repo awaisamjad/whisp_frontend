@@ -1,8 +1,5 @@
 <script>
 	import { goto } from "$app/navigation";
-	import { setSlots } from "$lib/layout-slots.svelte.js";
-	setSlots({ main_content, left_sidebar, right_sidebar });
-
 
 	import Post from "../../../components/Post.svelte";
 	let posts = [
@@ -76,16 +73,13 @@
 		{
 			username: "jane",
 			handle: "@jane_doe",
-			time: "5h",
+			time: "6h",
 			content: "Yet another post content example.",
 			image_content: "https://i.pravatar.cc/40?img=1",
 			avatar: "https://i.pravatar.cc/40?img=3",
 		},
 	];
 </script>
-
-{#snippet left_sidebar()}{/snippet}
-{#snippet main_content()}
 	{#each posts as post}
 		<Post
 			username={post.username}
@@ -96,6 +90,3 @@
 			avatar={post.avatar}
 		/>
 	{/each}
-{/snippet}
-
-{#snippet right_sidebar()}{/snippet}

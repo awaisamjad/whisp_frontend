@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { initSlots } from "$lib/layout-slots.svelte.js";
 	import { themes } from "$lib/themes";
 	import type { CreatePostRequest } from "../../app";
-	let { children } = $props();
+	`let { children } = $props();`
 
-	const slots = initSlots();
 
 	let showSidebar = $state(false);
 
@@ -66,7 +64,6 @@
 	sm:grid-rows-[auto_1fr_auto] sm:grid-cols-[1fr_3fr_1fr]
 "
 >
-	{@render children()}
 
 	<nav class="col-span-full grid grid-cols-3 gap-4 p-4 border-b-2">
 		<!-- Menu button for mobile -->
@@ -145,15 +142,13 @@
 	{/if}
 
 	<aside class="hidden sm:block border-r-2 row-start-2 col-start-1 col-end-2">
-		{@render slots.left_sidebar()}
 	</aside>
 
-	<main class="row-start-2 overflow-y-auto" bind:this={mainContent}>
-		{@render slots.main_content()}
+	<main class="row-start-2 overflow-y-auto">
+		{@render children()}
 	</main>
 
 	<aside class="hidden sm:block row-start-2 col-start-3 col-end-4 border-l-2">
-		{@render slots.right_sidebar()}
 	</aside>
 
 	<div class="btm-nav border-t-2">

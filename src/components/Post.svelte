@@ -24,7 +24,7 @@
 
 <a
     href="/"
-    class="border border-gray-300 p-4 flex items-start hover:bg-base-300"
+    class="border-t-2 border-gray-300 p-4 flex items-start hover:bg-base-300"
 >
     <div class="mr-4">
         <img class="rounded-full" src={avatar} alt="avatar" />
