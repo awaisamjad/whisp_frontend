@@ -9,31 +9,41 @@ declare global {
 	}
 }
 
-interface Post {
+export type PostType = {
 	id: number;
-	content: string;
 	username: string;
-	createdAt: string;
-	updatedAt: string;
-	likeNum: number;
-	dislikeNum: number;
-}
+	handle: string;
+	avatar: string;
+	title?: string; // Optional title for the post
+	text_content: string;
+	image_content: string; // Could be extended to an array for multiple images
+	media_url?: string;    // Video or additional media URL
+	tags?: string[];       // Tags for the post
+	comment_count: number; // Count of comments
+	retweet_count: number; // Count of retweets
+	like_num: number;
+	dislike_num: number;
+	created_at: string;
+	updated_at: string;
+};
 
-// Following and Followers are a list of user ids (numbers) of those they are following/followed by
-interface User {
+// ! IS there a datetime, image type
+
+export type UserType = {
 	id: number;
 	username: string;
-	firstName: string;
-	lastName: string;
+	first_name: string;
+	last_name: string;
 	email: string;
 	password: string;
-	createdAt: string;
-	updatedAt: string;
-	posts: Post[];
-	feed: Post[];
-	following: number[];
-	followers: number[];
+	avatar: string;
+	posts: PostType[];
+	feed: PostType[];
+	following: number[]; //This is a list of user ids
+	followers: number[]; //This is a list of user ids
 	bio: string;
+	created_at: string;
+	updated_at: string;
 }
 
 interface SignUpRequest {
@@ -65,4 +75,4 @@ interface SuccessResponse {
 }
 
 
-export {};
+export { };
