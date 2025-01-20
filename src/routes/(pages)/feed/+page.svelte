@@ -73,13 +73,29 @@
 </script>
 
 {#each posts as post}
-	<Post
-		id="feed/{post.id}"
-		username={post.username}
-		handle={post.handle}
-		time={post.time}
-		text_content={post.content}
-		image_content={post.image_content}
-		avatar={post.avatar}
-	/>
+	<a
+		href="feed/{post.id}"
+		class="post-box border-t-2 border-gray-300 p-4 flex"
+	>
+		<img
+			class="avatar w-10 h-10 rounded-full mr-4"
+			src={post.avatar}
+			alt={post.username}
+		/>
+		<div class="post-content flex-1">
+			<div class="post-header flex items-center mb-2">
+				<span class="username font-bold mr-2">{post.username}</span>
+				<span class="handle text-gray-600 mr-2">{post.handle}</span>
+				<span class="time text-gray-500">{post.time}</span>
+			</div>
+			<div class="text-content mb-2">{post.content}</div>
+			{#if post.image_content}
+				<img
+					class="image-content max-w-full rounded-lg"
+					src={post.image_content}
+					alt="Post"
+				/>
+			{/if}
+		</div>
+	</a>
 {/each}
