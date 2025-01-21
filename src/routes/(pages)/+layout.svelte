@@ -50,12 +50,12 @@
 			}}
 			class="col-span-1 sm:hidden flex place-content-left w-9"
 		>
-			<img src="menu.svg" alt="Toggle Sidebar" />
+			<enhanced:img src="/static/menu.svg" alt="Toggle Sidebar" />
 		</button>
 
 		<!-- Image for larger screens -->
 		<div class="hidden sm:block col-span-1 w-10">
-			<!-- <img src="favicon.png" alt="Larger Screen" class="w-full h-auto" /> -->
+			<enhanced:img src="/static/favicon.png" alt="Larger Screen" class="w-full h-auto" />
 		</div>
 
 		<!-- Logo -->
@@ -93,7 +93,7 @@
 						}}
 						class="w-8"
 					>
-						<img src="x.svg" class="" alt="" />
+						<enhanced:img src="/static/x.svg" class="" alt="" />
 					</button>
 				</div>
 			</div>
@@ -101,6 +101,7 @@
 	{/if}
 
 	<aside
+		id="left-sidebar"
 		class="hidden sm:block border-r-2 row-start-2 col-start-1 col-end-2"
 	></aside>
 
@@ -109,23 +110,26 @@
 	</main>
 
 	<aside
+		id="right-sidebar"
 		class="hidden sm:block row-start-2 col-start-3 col-end-4 border-l-2"
-	></aside>
+	>
+</aside>
 
 	<div class="btm-nav border-t-2">
 		<a href="/feed">
 			<button
 				class="btn bg-transparent border-transparent hover:border-transparent hover:bg-base-300 shadow-none hover:bg-transparent"
 			>
-				<img src="home.svg" alt="home" />
+				<enhanced:img src="/static/home.png" alt="home" class="w-10" />
 			</button>
 		</a>
 		<div class="" id="create-post-button">
+			<!-- svelte-ignore a11y_consider_explicit_label -->
 			<button
 				class="btn w-20 bg-transparent border-transparent hover:border-transparent hover:bg-base-300 shadow-none text-7xl flex items-center justify-center hover:bg-transparent"
 				onclick={() => document.getElementById("modal")?.showModal()}
 			>
-				<img src="create_post.svg" alt="create post" class="text-sm"/>
+				<enhanced:img src="/static/create_post.png" alt="create post" class="text-sm" />
 			</button>
 			<dialog id="modal" class="modal">
 				<div class="modal-box">
@@ -166,7 +170,7 @@
 			<button
 				class="btn bg-transparent border-transparent hover:border-transparent hover:bg-base-300 shadow-none hover:bg-transparent"
 			>
-				<img src="settings.svg" alt="settings" />
+				<enhanced:img src="/static/settings.png" alt="settings" class="w-10" />
 			</button>
 		</a>
 	</div>
