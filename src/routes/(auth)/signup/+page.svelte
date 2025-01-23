@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
+    import type { SignUpRequest } from "../../../app";
 
 	let error_message: string = $state("");
-	let user = {
+	let user : SignUpRequest = {
 		first_name: "",
 		last_name: "",
 		username: "",
@@ -17,9 +18,15 @@
 		showPassword = !showPassword;
 	}
 
+	let showConfirmPassword = $state(false);
+
+	function toggleConfirmPasswordVisibility() {
+		showConfirmPassword = !showConfirmPassword;
+	}
+
 	async function handleSubmit(event: Event) {
 		try {
-			const response = await fetch("http://localhost:8000/auth/sign-up", {
+			const response = await fetch("http://localhost:8000/auth/signup", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -31,11 +38,11 @@
 				error_message = result.error_message || "Something went wrong";
 			} else {
 				error_message = "";
-				goto("/log-in");
+				goto("/login");
 			}
 		} catch (error) {
 			error_message = "Failed to connect to the server";
-			console.error("Error during sign-up:", error);
+			console.error("Error during signup:", error);
 		}
 	}
 </script>
@@ -46,27 +53,27 @@
 >
 	<div class="space-y-6">
 		<!-- <div class="flex flex-row items-center justify-center gap-2"> -->
-			<label class="input input-bordered flex items-center gap-2">
-				<input
-					type="text"
-					name="first_name"
-					class="grow"
-					placeholder="First Name"
-					bind:value={user.first_name}
-					required
-				/>
-			</label>
+		<label class="input input-bordered flex items-center gap-2">
+			<input
+				type="text"
+				name="first_name"
+				class="grow"
+				placeholder="First Name"
+				bind:value={user.first_name}
+				required
+			/>
+		</label>
 
-			<label class="input input-bordered flex items-center gap-2">
-				<input
-					type="text"
-					name="last_name"
-					class="grow"
-					placeholder="Last Name"
-					bind:value={user.last_name}
-					required
-				/>
-			</label>
+		<label class="input input-bordered flex items-center gap-2">
+			<input
+				type="text"
+				name="last_name"
+				class="grow"
+				placeholder="Last Name"
+				bind:value={user.last_name}
+				required
+			/>
+		</label>
 		<!-- </div> -->
 
 		<label class="input input-bordered flex items-center gap-2">
@@ -107,6 +114,26 @@
 				/>
 			</button>
 		</label>
+
+		<label class="input input-bordered flex items-center gap-2">
+			<input
+				type={showConfirmPassword ? "text" : "password"}
+				class="grow"
+				placeholder="Confirm Password"
+				bind:value={user.confirm_password}
+				required
+			/>
+			<button type="button" on:click={toggleConfirmPasswordVisibility}>
+				<img
+					src={showConfirmPassword
+						? "eye_opened.svg"
+						: "eye_closed.svg"}
+					class="w-7"
+					alt=""
+				/>
+			</button>
+		</label>
+
 		<p class="text-red-500">{error_message}</p>
 	</div>
 	<div class="mt-10">
@@ -116,7 +143,7 @@
 	</div>
 	<p class=" text-sm mt-6 text-center">
 		Already have an account? <a
-			href="/log-in"
+			href="/login"
 			class="font-semibold underline hover:underline ml-1">Login</a
 		>
 	</p>

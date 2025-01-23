@@ -18,7 +18,7 @@ export const actions = {
         console.log('email:', email)
 
         // Make the fetch request to your backend service
-        const response = await fetch('http://localhost:8000/auth/log-in', {
+        const response = await fetch('http://localhost:8000/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -42,6 +42,6 @@ export const actions = {
 
         console.log("COKOEIEES:::::", cookies.get('auth_token'))
         // Optionally redirect or return user information
-        throw redirect(303, `/${result.username}`)
+        throw redirect(303, `/user/${result.username}`)
     }
 }

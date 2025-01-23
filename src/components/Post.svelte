@@ -149,7 +149,7 @@
             <span class="time text-gray-500">{post.updated_at}</span>
         </div>
 
-        <div id="content" on:click={() => goto(`feed/${post.id}`)}>
+        <div id="content" on:click={() => goto(`posts/${post.id}`)}>
             {post.text_content}
             {#if post.image_content}
                 <img
@@ -188,9 +188,9 @@
                 alt=""
                 class="w-5"
             />
-            <p>{post.like_num}</p>
+            <p>{post.like_count}</p>
         </button>
-        <div class="dropdown">
+        <div class="dropdown dropdown-end">
             <!-- svelte-ignore a11y_interactive_supports_focus -->
             <div
                 tabIndex={0}
@@ -202,10 +202,12 @@
             </div>
             <ul
                 tabIndex={0}
-                class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow outline"
+                class="dropdown-content menu bg-base-100 rounded-box z-[1] p-2 shadow outline"
             >
                 <li><button>Report</button></li>
-                <li><button>Delete</button></li>
+                <li><button>Bookmark</button></li>
+                <li><button>Share</button></li>
+                <li><button>DM</button></li>
             </ul>
         </div>
     </div>

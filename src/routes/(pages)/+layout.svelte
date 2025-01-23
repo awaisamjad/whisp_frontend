@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { username } from "../(auth)/login/state.svelte";
 	import type { CreatePostRequest } from "../../app";
 	let { children } = $props();
 
@@ -50,12 +51,16 @@
 			}}
 			class="col-span-1 sm:hidden flex place-content-left w-9"
 		>
-			<enhanced:img src="/static/menu.svg" alt="Toggle Sidebar" />
+			<img src="/menu.svg" alt="Toggle Sidebar" />
 		</button>
 
 		<!-- Image for larger screens -->
 		<div class="hidden sm:block col-span-1 w-10">
-			<enhanced:img src="/static/favicon.png" alt="Larger Screen" class="w-full h-auto" />
+			<enhanced:img
+				src="/static/favicon.png"
+				alt="Larger Screen"
+				class="w-full h-auto"
+			/>
 		</div>
 
 		<!-- Logo -->
@@ -65,7 +70,7 @@
 
 		<!-- Account -->
 		<div class="col-span-1 flex place-content-end">
-			<a href="/account">
+			<a href="/user/{username.username}">
 				<button class="">
 					<div class="avatar">
 						<div class="w-11 rounded-full ring">
@@ -93,7 +98,7 @@
 						}}
 						class="w-8"
 					>
-						<enhanced:img src="/static/x.svg" class="" alt="" />
+						<img src="/x.svg" class="" alt="" />
 					</button>
 				</div>
 			</div>
@@ -112,15 +117,19 @@
 	<aside
 		id="right-sidebar"
 		class="hidden sm:block row-start-2 col-start-3 col-end-4 border-l-2"
-	>
-</aside>
+	></aside>
 
 	<div class="btm-nav border-t-2">
+		<!-- svelte-ignore a11y_consider_explicit_label -->
 		<a href="/feed">
 			<button
 				class="btn bg-transparent border-transparent hover:border-transparent hover:bg-base-300 shadow-none hover:bg-transparent"
 			>
-				<enhanced:img src="/static/home.png" alt="home" class="w-10" />
+				<enhanced:img
+					src="/static/home.png"
+					alt="home"
+					class="w-8 sm:w-12"
+				/>
 			</button>
 		</a>
 		<div class="" id="create-post-button">
@@ -129,7 +138,11 @@
 				class="btn w-20 bg-transparent border-transparent hover:border-transparent hover:bg-base-300 shadow-none text-7xl flex items-center justify-center hover:bg-transparent"
 				onclick={() => document.getElementById("modal")?.showModal()}
 			>
-				<enhanced:img src="/static/create_post.png" alt="create post" class="text-sm" />
+				<enhanced:img
+					src="/static/create_post.png"
+					alt="create post"
+					class="w-8 sm:w-12"
+				/>
 			</button>
 			<dialog id="modal" class="modal">
 				<div class="modal-box">
@@ -166,11 +179,16 @@
 				</form>
 			</dialog>
 		</div>
+		<!-- svelte-ignore a11y_consider_explicit_label -->
 		<a href="/settings">
 			<button
 				class="btn bg-transparent border-transparent hover:border-transparent hover:bg-base-300 shadow-none hover:bg-transparent"
 			>
-				<enhanced:img src="/static/settings.png" alt="settings" class="w-10" />
+				<enhanced:img
+					src="/static/settings.png"
+					alt="settings"
+					class="w-8 sm:w-12"
+				/>
 			</button>
 		</a>
 	</div>

@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
+	import { username } from "./state.svelte";
+	import { getItemWithExpiration, setItemWithExpiration } from "../../../utils";
 	let error_message = $state("")
-	let username = "";
+	
 	let user = {
 		email: "",
 		password: "",
@@ -15,7 +17,7 @@
 
 	async function handleSubmit(event: Event) {
 		try {
-			const response = await fetch("http://localhost:8000/auth/log-in", {
+			const response = await fetch("http://localhost:8000/auth/login", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -25,13 +27,16 @@
 
 			const result = await response.json();
 			console.log(result);
-			localStorage.setItem("auth_token", result.token);
-			localStorage.setItem("username", result.username);
+			// localStorage.setItem("auth_token", result.token);
+			// localStorage.setItem("username", result.username);
+			setItemWithExpiration("auth_token", result.token, 0.3)
+			setItemWithExpiration("username", result.username, 0.3)
+			username.username = result.username
 			if (!response.ok) {
 				error_message = result.error_message || "Something went wrong";
 			} else {
 				// Redirect after successful login
-				goto(`/${result.username}`);
+				goto(`/feed`);
 			}
 		} catch (error) {
 			error_message = "Failed to connect to the server";
@@ -81,7 +86,7 @@
 	</div>
 	<p class="text-sm mt-4 sm:mt-6 text-center">
 		Dont have an account? <a
-			href="/sign-up"
+			href="/signup"
 			class="font-semibold underline hover:underline ml-1"
 			>Sign Up</a
 		>

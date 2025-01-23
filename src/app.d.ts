@@ -11,18 +11,16 @@ declare global {
 
 export type PostType = {
 	id: number;
+	user_id: number;
 	username: string;
 	handle: string;
 	avatar: string;
-	title?: string; // Optional title for the post
 	text_content: string;
-	image_content: string; // Could be extended to an array for multiple images
-	media_url?: string;    // Video or additional media URL
+	image_content?: string; // Could be extended to an array for multiple images
 	tags?: string[];       // Tags for the post
 	comment_count: number; // Count of comments
 	retweet_count: number; // Count of retweets
-	like_num: number;
-	dislike_num: number;
+	like_count: number;
 	created_at: string;
 	updated_at: string;
 };
@@ -46,13 +44,13 @@ export type UserType = {
 	updated_at: string;
 }
 
-interface SignUpRequest {
-	firstName: string;
-	lastName: string;
+export type SignUpRequest = {
+	first_name: string;
+	last_name: string;
 	username: string;
 	email: string;
 	password: string;
-	confirmPassword: string;
+	confirm_password: string;
 }
 
 interface LogInRequest {
