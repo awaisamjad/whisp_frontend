@@ -1,19 +1,41 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
-	import { username } from "./state.svelte";
-	import { getItemWithExpiration, setItemWithExpiration } from "../../../utils";
-	let error_message = $state("")
-	
-	let user = {
-		email: "",
-		password: "",
-	};
+	import { browser } from "$app/environment";
+	import { username, auth_token } from "./state.svelte";
+	// import { getItemWithExpiration } from "../../../../utils.svelte";
+	// import { setItemWithExpiration } from "../../../../utils.svelte";
+	import type { LogInRequest, LogInResponse } from "../../../app";
+	let error_message = $state("");
+
+
+	function setCookie(
+		name: any,
+		value: string | number | boolean,
+		days: number,
+	) {
+		const expires = new Date(Date.now() + days * 864e5).toUTCString(); // Calculate expiration date
+		// document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+		document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+	}
+
+	function getCookie(name: any) {
+		const value = `; ${document.cookie}`;
+		const parts = value.split(`; ${name}=`);
+		if (parts.length === 2)
+			return parts.pop()?.split(";").shift();
+		return null; // Return null if the cookie does not exist
+	}
 
 	let showPassword = $state(false);
 
 	function togglePasswordVisibility() {
 		showPassword = !showPassword;
 	}
+
+	let user: LogInRequest = {
+		email: "",
+		password: "",
+	};
 
 	async function handleSubmit(event: Event) {
 		try {
@@ -25,17 +47,21 @@
 				body: JSON.stringify(user),
 			});
 
-			const result = await response.json();
+			const result: LogInResponse = await response.json();
 			console.log(result);
-			// localStorage.setItem("auth_token", result.token);
-			// localStorage.setItem("username", result.username);
-			setItemWithExpiration("auth_token", result.token, 0.3)
-			setItemWithExpiration("username", result.username, 0.3)
-			username.username = result.username
+			// setItemWithExpiration("username", result.username, 1);
+			// setItemWithExpiration("auth_token", result.auth_token, 1);
+			// setItemWithExpiration("user_id", result.user_id, 1);
+			setCookie("username", result.username, 30);
+			setCookie("auth_token", result.auth_token, 30);
+			setCookie("user_id", result.user_id, 30);
+			// username.username = result.username
+			// auth_token.auth_token = result.auth_token
+
 			if (!response.ok) {
-				error_message = result.error_message || "Something went wrong";
+				// error_message = result.error_message || "Something went wrong";
+				error_message = "Something went wrong";
 			} else {
-				// Redirect after successful login
 				goto(`/feed`);
 			}
 		} catch (error) {
@@ -87,8 +113,7 @@
 	<p class="text-sm mt-4 sm:mt-6 text-center">
 		Dont have an account? <a
 			href="/signup"
-			class="font-semibold underline hover:underline ml-1"
-			>Sign Up</a
+			class="font-semibold underline hover:underline ml-1">Sign Up</a
 		>
 	</p>
 </form>

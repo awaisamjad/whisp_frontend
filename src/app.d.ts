@@ -53,9 +53,17 @@ export type SignUpRequest = {
 	confirm_password: string;
 }
 
-interface LogInRequest {
+
+
+export type LogInRequest = {
 	email: string;
 	password: string;
+}
+
+export type LogInResponse = {
+	user_id: number;
+	auth_token: string;
+	username: string;
 }
 
 export interface CreatePostRequest {

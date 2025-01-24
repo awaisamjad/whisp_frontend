@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { username } from "../(auth)/login/state.svelte";
+	import { username } from "../(auth)/login/state.svelte";
 	import type { CreatePostRequest } from "../../app";
 	let { children } = $props();
-
+	let error_message = $state("");
 	let showSidebar = $state(false);
 
 	let post_content = $state("");
@@ -24,7 +24,7 @@
 			const result = await response.json();
 			if (!response.ok) {
 				console.error(result.error_message);
-				// error_message = result.error_message || "Something went wrong";
+				error_message = result.error_message || "Something went wrong";
 			} else {
 				console.log("Successfully created post");
 				// error_message = "";
@@ -69,20 +69,22 @@
 		</div>
 
 		<!-- Account -->
-		<div class="col-span-1 flex place-content-end">
-			<a href="/user/{username.username}">
-				<button class="">
-					<div class="avatar">
-						<div class="w-11 rounded-full ring">
-							<img
-								src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-								alt="profile"
-							/>
+		{#if username.username !== ""}
+			<div class="col-span-1 flex place-content-end">
+				<a href="/user/{username.username}">
+					<button class="">
+						<div class="avatar">
+							<div class="w-11 rounded-full ring">
+								<img
+									src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+									alt="profile"
+								/>
+							</div>
 						</div>
-					</div>
-				</button>
-			</a>
-		</div>
+					</button>
+				</a>
+			</div>
+		{/if}
 	</nav>
 
 	{#if showSidebar === true}
@@ -153,6 +155,7 @@
 						required
 						bind:value={post_content}
 					></textarea>
+					<p class=" text-error">{error_message}</p>
 					<div class="join w-full">
 						<form class="w-1/3 flex items-center justify-center">
 							<label

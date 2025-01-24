@@ -3,22 +3,56 @@
     import { onMount } from "svelte";
     import type { PostType } from "../../../app";
     import Post from "../../../components/Post.svelte";
-
+    import { browser } from "$app/environment";
     let posts: PostType[] = $state([]);
     let error_message = $state("");
-    // It'd prob be best if we can give the query here to send to the backend that will execute it and grab what we want
-    // Not really sure
+
+    // export function getItemWithExpiration(key: string): any {
+    // 	const itemStr = localStorage.getItem(key);
+
+    // 	if (!itemStr) {
+    // 		return null; // Item does not exist
+    // 	}
+
+    // 	const item = JSON.parse(itemStr);
+    // 	const now = new Date();
+
+    // 	// Check if the item has expired
+    // 	if (now.getTime() > item.expiry) {
+    // 		localStorage.removeItem(key); // Remove expired item
+    // 		return null; // Item has expired
+    // 	}
+
+    // 	return item.value; // Return the stored value
+    // }
+    function getCookie(name: any) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop()?.split(";").shift();
+        return null; // Return null if the cookie does not exist
+    }
+
+    let auth_token: any;
+    if (browser) {
+        auth_token = getCookie("auth_token");
+    }
+    /**
+     *
+     * @param query - A query that can be used in the dB
+     */
     async function getPosts(query: string) {
         try {
             const response = await fetch("http://localhost:8000/posts", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${auth_token}`,
                 },
             });
 
-
             const result = await response.json();
+
+            console.log("isAuthenticated:", result.isAuthenticated);
             console.log(result.posts);
             posts = result.posts;
             if (!response.ok) {
@@ -32,8 +66,7 @@
 
     onMount(() => {
         getPosts("");
-    })
-    
+    });
 </script>
 
 <p>{error_message}</p>
