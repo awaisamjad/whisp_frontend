@@ -53,8 +53,6 @@ export type SignUpRequest = {
 	confirm_password: string;
 }
 
-
-
 export type LogInRequest = {
 	email: string;
 	password: string;

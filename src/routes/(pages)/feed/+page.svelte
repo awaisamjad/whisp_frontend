@@ -1,30 +1,13 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
     import { onMount } from "svelte";
     import type { PostType } from "../../../app";
     import Post from "../../../components/Post.svelte";
     import { browser } from "$app/environment";
+    import { isUserLoggedIn } from "../../../utils.svelte";
     let posts: PostType[] = $state([]);
     let error_message = $state("");
+    import Cookies from "js-cookie";
 
-    // export function getItemWithExpiration(key: string): any {
-    // 	const itemStr = localStorage.getItem(key);
-
-    // 	if (!itemStr) {
-    // 		return null; // Item does not exist
-    // 	}
-
-    // 	const item = JSON.parse(itemStr);
-    // 	const now = new Date();
-
-    // 	// Check if the item has expired
-    // 	if (now.getTime() > item.expiry) {
-    // 		localStorage.removeItem(key); // Remove expired item
-    // 		return null; // Item has expired
-    // 	}
-
-    // 	return item.value; // Return the stored value
-    // }
     function getCookie(name: any) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);

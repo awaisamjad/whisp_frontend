@@ -1,30 +1,9 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
-	import { browser } from "$app/environment";
-	import { username, auth_token } from "./state.svelte";
-	// import { getItemWithExpiration } from "../../../../utils.svelte";
-	// import { setItemWithExpiration } from "../../../../utils.svelte";
+	import Cookies from "js-cookie";
+
 	import type { LogInRequest, LogInResponse } from "../../../app";
 	let error_message = $state("");
-
-
-	function setCookie(
-		name: any,
-		value: string | number | boolean,
-		days: number,
-	) {
-		const expires = new Date(Date.now() + days * 864e5).toUTCString(); // Calculate expiration date
-		// document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
-		document.cookie = `${name}=${value}; expires=${expires}; path=/`;
-	}
-
-	function getCookie(name: any) {
-		const value = `; ${document.cookie}`;
-		const parts = value.split(`; ${name}=`);
-		if (parts.length === 2)
-			return parts.pop()?.split(";").shift();
-		return null; // Return null if the cookie does not exist
-	}
 
 	let showPassword = $state(false);
 
@@ -48,18 +27,12 @@
 			});
 
 			const result: LogInResponse = await response.json();
-			console.log(result);
-			// setItemWithExpiration("username", result.username, 1);
-			// setItemWithExpiration("auth_token", result.auth_token, 1);
-			// setItemWithExpiration("user_id", result.user_id, 1);
-			setCookie("username", result.username, 30);
-			setCookie("auth_token", result.auth_token, 30);
-			setCookie("user_id", result.user_id, 30);
-			// username.username = result.username
-			// auth_token.auth_token = result.auth_token
+			Cookies.set("username", result.username, { expires: 30 });
+			Cookies.set("auth_token", result.auth_token, { expires: 30 });
+			Cookies.set("user_id", String(result.user_id), { expires: 30 });
 
 			if (!response.ok) {
-				// error_message = result.error_message || "Something went wrong";
+				//? Keep the error message vague
 				error_message = "Something went wrong";
 			} else {
 				goto(`/feed`);
@@ -95,10 +68,10 @@
 				bind:value={user.password}
 				required
 			/>
-			<button type="button" on:click={togglePasswordVisibility}>
+			<button type="button" on:click={togglePasswordVisibility} class=" hover:bg-base-300 rounded-lg p-2">
 				<img
 					src={showPassword ? "eye_opened.svg" : "eye_closed.svg"}
-					class="w-7"
+					class="w-6"
 					alt=""
 				/>
 			</button>

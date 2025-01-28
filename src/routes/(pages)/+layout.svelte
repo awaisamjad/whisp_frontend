@@ -1,17 +1,21 @@
 <script lang="ts">
-	import { username } from "../(auth)/login/state.svelte";
+	import { goto } from "$app/navigation";
 	import type { CreatePostRequest } from "../../app";
+	import { isUserLoggedIn, signOut } from "../../utils.svelte";
+	import { main_background_colour } from "../state.svelte";
+	import Cookies from "js-cookie";
 	let { children } = $props();
 	let error_message = $state("");
 	let showSidebar = $state(false);
-
+	const username = Cookies.get("username") || "";
+	const user_id = Cookies.get("user_id") || "";
 	let post_content = $state("");
 	async function createPost() {
 		console.log(post_content);
 		try {
 			let createPostRequest: CreatePostRequest = {
 				content: post_content,
-				user_id: "4",
+				user_id: user_id,
 			};
 
 			const response = await fetch("http://localhost:8000/create-post", {
@@ -27,20 +31,35 @@
 				error_message = result.error_message || "Something went wrong";
 			} else {
 				console.log("Successfully created post");
-				// error_message = "";
-				// username = result.username;
-				// goto(`/${username}`);
 			}
 		} catch (error) {
-			// error_message = "Failed to connect to the server";
 			console.error("Error creating post", error);
 		}
 	}
+
+	
 </script>
 
+{#snippet authenticationButtons()}
+	{#if isUserLoggedIn()}
+		<button
+			class="btn btn-error sm:w-32 md:w-40 lg:w-48 xl:w-64 mx-4"
+			onclick={() => signOut()}>Sign Out</button
+		>
+	{:else if !isUserLoggedIn()}
+		<button
+			class="btn btn-accent sm:w-32 md:w-40 lg:w-48 xl:w-64 mx-4"
+			onclick={() => goto("/login")}>Log In</button
+		>
+	{/if}
+{/snippet}
+
 <div
+	id="main"
 	class="grid h-screen grid-rows-[auto_1fr_auto] grid-cols-1
 	sm:grid-rows-[auto_1fr_auto] sm:grid-cols-[1fr_3fr_1fr]
+	{main_background_colour.colour}
+	
 "
 >
 	<nav class="col-span-full grid grid-cols-3 gap-4 p-4 border-b-2">
@@ -48,6 +67,7 @@
 		<button
 			onclick={() => {
 				showSidebar = true;
+				main_background_colour.colour = "bg-base-300";
 			}}
 			class="col-span-1 sm:hidden flex place-content-left w-9"
 		>
@@ -69,9 +89,9 @@
 		</div>
 
 		<!-- Account -->
-		{#if username.username !== ""}
+		{#if username !== ""}
 			<div class="col-span-1 flex place-content-end">
-				<a href="/user/{username.username}">
+				<a href="/user/{username}">
 					<button class="">
 						<div class="avatar">
 							<div class="w-11 rounded-full ring">
@@ -88,15 +108,17 @@
 	</nav>
 
 	{#if showSidebar === true}
+		<!-- ? sm:hidden closes the sidebar at sm>= -->
 		<aside
 			id="sidebar"
-			class="menu fixed z-10 bg-secondary flex h-screen flex-col justify-between min-w-72 transition-transform duration-300 ease-in-out transform translate-x-0"
+			class="menu fixed z-10 bg-secondary flex h-screen flex-col justify-between w-3/4 transition-transform duration-300 ease-in-out transform translate-x-0 sm:hidden"
 		>
 			<div class="px-4 py-6">
 				<div class="flex flex-row justify-end">
 					<button
 						onclick={() => {
 							showSidebar = false;
+							main_background_colour.colour = "bg-base";
 						}}
 						class="w-8"
 					>
@@ -104,13 +126,16 @@
 					</button>
 				</div>
 			</div>
+			{@render authenticationButtons()}
 		</aside>
 	{/if}
 
 	<aside
 		id="left-sidebar"
-		class="hidden sm:block border-r-2 row-start-2 col-start-1 col-end-2"
-	></aside>
+		class="hidden sm:flex sm:flex-col sm:items-center sm:justify-center border-r-2 row-start-2 col-start-1 col-end-2"
+	>
+		{@render authenticationButtons()}
+	</aside>
 
 	<main class="row-start-2 overflow-y-auto">
 		{@render children()}
@@ -121,8 +146,8 @@
 		class="hidden sm:block row-start-2 col-start-3 col-end-4 border-l-2"
 	></aside>
 
+	<!-- svelte-ignore a11y_consider_explicit_label -->
 	<div class="btm-nav border-t-2">
-		<!-- svelte-ignore a11y_consider_explicit_label -->
 		<a href="/feed">
 			<button
 				class="btn bg-transparent border-transparent hover:border-transparent hover:bg-base-300 shadow-none hover:bg-transparent"
@@ -135,7 +160,6 @@
 			</button>
 		</a>
 		<div class="" id="create-post-button">
-			<!-- svelte-ignore a11y_consider_explicit_label -->
 			<button
 				class="btn w-20 bg-transparent border-transparent hover:border-transparent hover:bg-base-300 shadow-none text-7xl flex items-center justify-center hover:bg-transparent"
 				onclick={() => document.getElementById("modal")?.showModal()}
@@ -148,41 +172,54 @@
 			</button>
 			<dialog id="modal" class="modal">
 				<div class="modal-box">
-					<!-- <h3 class="text-lg font-bold mb-4">What are you going to say?</h3> -->
-					<textarea
-						class="textarea textarea-bordered w-full mb-4 h-32 max-h-32"
-						placeholder="..."
-						required
-						bind:value={post_content}
-					></textarea>
-					<p class=" text-error">{error_message}</p>
-					<div class="join w-full">
-						<form class="w-1/3 flex items-center justify-center">
-							<label
-								for="customFileInput"
-								class="w-full h-full outline"
+					{#if isUserLoggedIn()}
+						<textarea
+							class="textarea textarea-bordered w-full mb-4 h-32 max-h-32"
+							placeholder="..."
+							required
+							bind:value={post_content}
+						></textarea>
+						<p class=" text-error">{error_message}</p>
+						<div class="join w-full">
+							<form
+								class="w-1/3 flex items-center justify-center"
 							>
-								Input
-							</label>
-							<input
-								type="file"
-								id="customFileInput"
-								class="hidden"
-							/>
-						</form>
-						<button class="btn join-item w-1/3">Emoji</button>
-						<button
-							class="btn join-item w-1/3 bg-blue-500"
-							onclick={() => createPost()}>Post</button
-						>
-					</div>
+								<label
+									for="customFileInput"
+									class="w-full h-full outline"
+								>
+									Input
+								</label>
+								<input
+									type="file"
+									id="customFileInput"
+									class="hidden"
+								/>
+							</form>
+							<button class="btn join-item w-1/3">Emoji</button>
+							<button
+								class="btn join-item w-1/3 bg-info"
+								onclick={() => createPost()}>Post</button
+							>
+						</div>
+					{:else}
+						<p class=" flex justify-center gap-1 text-lg">
+							Please <a
+								href="/signup"
+								class="text-info hover:underline">sign up</a
+							>
+							or
+							<a href="/login" class="text-info hover:underline"
+								>log in</a
+							> to create a post.
+						</p>
+					{/if}
 				</div>
 				<form method="dialog" class="modal-backdrop">
 					<button>close</button>
 				</form>
 			</dialog>
 		</div>
-		<!-- svelte-ignore a11y_consider_explicit_label -->
 		<a href="/settings">
 			<button
 				class="btn bg-transparent border-transparent hover:border-transparent hover:bg-base-300 shadow-none hover:bg-transparent"
