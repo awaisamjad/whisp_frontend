@@ -62,11 +62,13 @@ export type LogInResponse = {
 	user_id: number;
 	auth_token: string;
 	username: string;
+	avatar: string;
 }
 
 export interface CreatePostRequest {
 	content: string;
 	user_id: string;
+	username: string;
 }
 
 interface ErrorResponse {

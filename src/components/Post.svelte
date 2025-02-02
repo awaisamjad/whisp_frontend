@@ -2,19 +2,6 @@
     import { goto } from "$app/navigation";
     import type { PostType } from "../app";
 
-    // let {
-    //     id = "",
-    //     username = "",
-    //     handle = "@handle",
-    //     time = "1h",
-    //     text_content = "Text Content",
-    //     image_content = "favicon.png",
-    //     avatar = "https://via.placeholder.com/50",
-    //     number_of_comments = 0,
-    //     number_of_retweets = 0,
-    //     number_of_likes = 0,
-    // } = $props();
-
     let post: PostType = $props();
 
     let liked = $state(false);
@@ -39,13 +26,11 @@
         <div
             class="post-header flex items-center mb-2 bg-base-200 p-2 rounded-sm"
         >
-            <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-            <!-- svelte-ignore event_directive_deprecated -->
             <img
                 class="avatar w-10 h-10 rounded-full mr-4"
                 src="/{post.avatar}"
                 alt={post.username}
-                on:click|stopPropagation={() => goto(`account/${post.username}`)}
+                on:click|stopPropagation={() => goto(`/user/${post.username}`)}
                 style="cursor: pointer;"
             />
             <span class="username font-bold mr-2">{post.username}</span>
@@ -53,7 +38,7 @@
             <span class="time text-gray-500">{post.updated_at}</span>
         </div>
 
-        <div id="content" on:click={() => goto(`posts/${post.id}`)}>
+        <div id="content" on:click={() => goto(`/posts/${post.id}`)}>
             {post.text_content}
             {#if post.image_content}
                 <img
@@ -76,8 +61,8 @@
         >
             <img
                 src={retweeted
-                    ? "retweet_clicked.svg"
-                    : "retweet_not_clicked.svg"}
+                    ? "/retweet_clicked.svg"
+                    : "/retweet_not_clicked.svg"}
                 alt=""
                 class="w-5"
             />
@@ -88,7 +73,7 @@
             on:click|preventDefault={() => toggleLike()}
         >
             <img
-                src={liked ? "heart_clicked.svg" : "heart_not_clicked.svg"}
+                src={liked ? "/heart_clicked.svg" : "/heart_not_clicked.svg"}
                 alt=""
                 class="w-5"
             />

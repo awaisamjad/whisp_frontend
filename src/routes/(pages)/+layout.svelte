@@ -1,24 +1,29 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import type { CreatePostRequest } from "../../app";
+    import FileInput from "../../components/FileInput.svelte";
 	import { isUserLoggedIn, signOut } from "../../utils.svelte";
 	import { main_background_colour } from "../state.svelte";
 	import Cookies from "js-cookie";
-	let { children } = $props();
+	import { House, CirclePlus, Settings, X, Menu } from "lucide-svelte";
+	let { data, children } = $props();
 	let error_message = $state("");
 	let showSidebar = $state(false);
 	const username = Cookies.get("username") || "";
 	const user_id = Cookies.get("user_id") || "";
+	let url = data.url;
 	let post_content = $state("");
+
 	async function createPost() {
 		console.log(post_content);
 		try {
 			let createPostRequest: CreatePostRequest = {
 				content: post_content,
 				user_id: user_id,
+				username: username,
 			};
 
-			const response = await fetch("http://localhost:8000/create-post", {
+			const response = await fetch(url, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -36,8 +41,6 @@
 			console.error("Error creating post", error);
 		}
 	}
-
-	
 </script>
 
 {#snippet authenticationButtons()}
@@ -71,7 +74,7 @@
 			}}
 			class="col-span-1 sm:hidden flex place-content-left w-9"
 		>
-			<img src="/menu.svg" alt="Toggle Sidebar" />
+			<Menu size={48} />
 		</button>
 
 		<!-- Image for larger screens -->
@@ -85,7 +88,9 @@
 
 		<!-- Logo -->
 		<div class="col-span-1 sm:col-span-1 flex place-content-center">
-			<a href="/feed" class="text-4xl font-semibold"> Whisp </a>
+			<a href="/feed" class="text-5xl font-semibold hover:underline">
+				Whisp
+			</a>
 		</div>
 
 		<!-- Account -->
@@ -94,9 +99,10 @@
 				<a href="/user/{username}">
 					<button class="">
 						<div class="avatar">
-							<div class="w-11 rounded-full ring">
+							<div class="w-11 rounded-full ring hover:ring-4">
 								<img
-									src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+									src={Cookies.get("avatar") ||
+										"default_avatar.webp"}
 									alt="profile"
 								/>
 							</div>
@@ -122,11 +128,11 @@
 						}}
 						class="w-8"
 					>
-						<img src="/x.svg" class="" alt="" />
+					<X size={48} color="#3e9392"/>
 					</button>
 				</div>
 			</div>
-			{@render authenticationButtons()}
+			<!-- {@render authenticationButtons()} -->
 		</aside>
 	{/if}
 
@@ -134,7 +140,7 @@
 		id="left-sidebar"
 		class="hidden sm:flex sm:flex-col sm:items-center sm:justify-center border-r-2 row-start-2 col-start-1 col-end-2"
 	>
-		{@render authenticationButtons()}
+		<!-- {@render authenticationButtons()} -->
 	</aside>
 
 	<main class="row-start-2 overflow-y-auto">
@@ -148,88 +154,82 @@
 
 	<!-- svelte-ignore a11y_consider_explicit_label -->
 	<div class="btm-nav border-t-2">
-		<a href="/feed">
-			<button
-				class="btn bg-transparent border-transparent hover:border-transparent hover:bg-base-300 shadow-none hover:bg-transparent"
-			>
-				<enhanced:img
-					src="/static/home.png"
-					alt="home"
-					class="w-8 sm:w-12"
-				/>
-			</button>
-		</a>
-		<div class="" id="create-post-button">
-			<button
-				class="btn w-20 bg-transparent border-transparent hover:border-transparent hover:bg-base-300 shadow-none text-7xl flex items-center justify-center hover:bg-transparent"
-				onclick={() => document.getElementById("modal")?.showModal()}
-			>
-				<enhanced:img
-					src="/static/create_post.png"
-					alt="create post"
-					class="w-8 sm:w-12"
-				/>
-			</button>
-			<dialog id="modal" class="modal">
-				<div class="modal-box">
-					{#if isUserLoggedIn()}
-						<textarea
-							class="textarea textarea-bordered w-full mb-4 h-32 max-h-32"
-							placeholder="..."
-							required
-							bind:value={post_content}
-						></textarea>
-						<p class=" text-error">{error_message}</p>
-						<div class="join w-full">
-							<form
-								class="w-1/3 flex items-center justify-center"
-							>
-								<label
-									for="customFileInput"
-									class="w-full h-full outline"
+		{#if isUserLoggedIn()}
+			<div class="">
+				<a href="/feed" class="">
+					<House size={48} />
+				</a>
+			</div>
+			<div class="" id="create-post-button">
+				<button
+					class="btn w-20 bg-transparent border-transparent hover:border-transparent hover:bg-base-300 shadow-none text-7xl flex items-center justify-center hover:bg-transparent"
+					onclick={() =>
+						document.getElementById("modal")?.showModal()}
+				>
+					<CirclePlus size={48} />
+				</button>
+				<dialog id="modal" class="modal">
+					<div class="modal-box">
+						{#if isUserLoggedIn()}
+							<textarea
+								class="textarea textarea-bordered w-full mb-4 h-32 max-h-32"
+								placeholder="..."
+								required
+								bind:value={post_content}
+							></textarea>
+							<p class=" text-error">{error_message}</p>
+							<div class="join w-full">
+								<FileInput/>
+								<button class="btn join-item w-1/3"
+									>Emoji</button
 								>
-									Input
-								</label>
-								<input
-									type="file"
-									id="customFileInput"
-									class="hidden"
-								/>
-							</form>
-							<button class="btn join-item w-1/3">Emoji</button>
-							<button
-								class="btn join-item w-1/3 bg-info"
-								onclick={() => createPost()}>Post</button
-							>
-						</div>
-					{:else}
-						<p class=" flex justify-center gap-1 text-lg">
-							Please <a
-								href="/signup"
-								class="text-info hover:underline">sign up</a
-							>
-							or
-							<a href="/login" class="text-info hover:underline"
-								>log in</a
-							> to create a post.
-						</p>
-					{/if}
-				</div>
-				<form method="dialog" class="modal-backdrop">
-					<button>close</button>
-				</form>
-			</dialog>
-		</div>
-		<a href="/settings">
-			<button
-				class="btn bg-transparent border-transparent hover:border-transparent hover:bg-base-300 shadow-none hover:bg-transparent"
-			>
-				<enhanced:img
-					src="/static/settings.png"
-					alt="settings"
-					class="w-8 sm:w-12"
-				/>
-			</button>
-		</a>
+								<button
+									class="btn join-item w-1/3 bg-info text-info-content hover:text-white"
+									onclick={() => {
+										createPost();
+										document
+											.getElementById("modal")
+											?.closeModal();
+									}}>Post</button
+								>
+							</div>
+						{:else}
+							<p class=" flex justify-center gap-1 text-lg">
+								Please <a
+									href="/signup"
+									class="text-info hover:underline">sign up</a
+								>
+								or
+								<a
+									href="/login"
+									class="text-info hover:underline">log in</a
+								> to create a post.
+							</p>
+						{/if}
+					</div>
+					<form method="dialog" class="modal-backdrop">
+						<button>close</button>
+					</form>
+				</dialog>
+			</div>
+			<a href="/settings">
+				<button
+					class="btn bg-transparent border-transparent hover:border-transparent hover:bg-base-300 shadow-none hover:bg-transparent"
+				>
+					<Settings size={48}/>
+				</button>
+			</a>
+		{:else}
+			<div class="flex flex-row justify-evenly">
+				<button
+					class="btn btn-secondary sm:w-32 md:w-40 lg:w-48 xl:w-64 mx-4"
+					onclick={() => goto("/signup")}>Sign Up</button
+				>
+				<button
+					class="btn btn-accent sm:w-32 md:w-40 lg:w-48 xl:w-64 mx-4"
+					onclick={() => goto("/login")}>Log In</button
+				>
+			</div>
+		{/if}
 	</div>
 </div>

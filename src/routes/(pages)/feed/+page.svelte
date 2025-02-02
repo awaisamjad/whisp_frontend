@@ -2,70 +2,49 @@
     import { onMount } from "svelte";
     import type { PostType } from "../../../app";
     import Post from "../../../components/Post.svelte";
-    import { browser } from "$app/environment";
-    import { isUserLoggedIn } from "../../../utils.svelte";
-    let posts: PostType[] = $state([]);
-    let error_message = $state("");
+    import type { PageData } from "./$types";
     import Cookies from "js-cookie";
+    
+    let { data }: { data: PageData } = $props();
+    let posts: PostType[] = $state([]);
 
-    function getCookie(name: any) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop()?.split(";").shift();
-        return null; // Return null if the cookie does not exist
-    }
-
-    let auth_token: any;
-    if (browser) {
-        auth_token = getCookie("auth_token");
-    }
-    /**
-     *
-     * @param query - A query that can be used in the dB
-     */
-    async function getPosts(query: string) {
+    let error_message = "";
+    console.log(Cookies.get("user_id"));
+    onMount(async () => {
         try {
-            const response = await fetch("http://localhost:8000/posts", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${auth_token}`,
-                },
-            });
-
-            const result = await response.json();
-
-            console.log("isAuthenticated:", result.isAuthenticated);
-            console.log(result.posts);
-            posts = result.posts;
-            if (!response.ok) {
-                error_message = result.error_message || "Something went wrong";
-            }
+            posts = (await data.posts) || [];
         } catch (error) {
-            error_message = "Failed to connect to the server";
-            console.error("Error getting posts", error);
+            error_message = "Failed to load posts.";
+            console.error(error);
         }
-    }
-
-    onMount(() => {
-        getPosts("");
     });
 </script>
-
-<p>{error_message}</p>
-{#each posts as post}
-    <Post
-        id={post.id}
-        user_id={post.user_id}
-        username={post.username}
-        handle={post.handle}
-        text_content={post.text_content}
-        image_content={post.image_content}
-        avatar={post.avatar}
-        comment_count={post.comment_count}
-        retweet_count={post.retweet_count}
-        like_count={post.like_count}
-        created_at={post.created_at}
-        updated_at={post.updated_at}
-    />
-{/each}
+{#if posts.length}
+    {#each posts as post}
+        <Post
+            id={post.id}
+            user_id={post.user_id}
+            username={post.username}
+            handle={post.handle}
+            text_content={post.text_content}
+            image_content={post.image_content}
+            avatar={post.avatar}
+            comment_count={post.comment_count}
+            retweet_count={post.retweet_count}
+            like_count={post.like_count}
+            created_at={post.created_at}
+            updated_at={post.updated_at}
+        />
+    {/each}
+    <div
+        class="flex flex-row items-center justify-center text-6xl text-info font-bold p-2 text-center"
+    >
+        End of Feed
+    </div>
+{:else}
+    <p
+        class="flex flex-row items-center justify-center text-6xl text-error font-bold mt-4 p-5 text-center"
+    >
+        No posts available at the moment. Please try again later.
+    </p>
+{/if}

@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import Cookies from "js-cookie";
-
 	import type { LogInRequest, LogInResponse } from "../../../app";
+	import type { PageData } from "./$types";
+	import { setEncryptedCookie } from "$lib/utils";
+	let { data }: { data: PageData } = $props();
 	let error_message = $state("");
 
 	let showPassword = $state(false);
@@ -16,9 +18,10 @@
 		password: "",
 	};
 
-	async function handleSubmit(event: Event) {
+	async function login(event: Event) {
+		console.log(data.url);
 		try {
-			const response = await fetch("http://localhost:8000/auth/login", {
+			const response = await fetch(`${data.url}/auth/login`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -27,15 +30,21 @@
 			});
 
 			const result: LogInResponse = await response.json();
-			Cookies.set("username", result.username, { expires: 30 });
-			Cookies.set("auth_token", result.auth_token, { expires: 30 });
-			Cookies.set("user_id", String(result.user_id), { expires: 30 });
+			if (response.ok) {
+				// Might be better to store as json and then retrieve as json object
 
-			if (!response.ok) {
-				//? Keep the error message vague
-				error_message = "Something went wrong";
-			} else {
+				// setEncryptedCookie("username", result.username);
+				// setEncryptedCookie("auth_token", result.auth_token);
+				// setEncryptedCookie("user_id", String(result.user_id));
+				Cookies.set("username", result.username, { expires: 30 });
+				Cookies.set("auth_token", result.auth_token, { expires: 30 });
+				Cookies.set("user_id", String(result.user_id), { expires: 30 });
+				Cookies.set("avatar", result.avatar, {expires : 30});				
 				goto(`/feed`);
+			} else {
+				//? Keep the error message vague
+				error_message =
+					"Something went wrong. Please try again later :-)";
 			}
 		} catch (error) {
 			error_message = "Failed to connect to the server";
@@ -44,10 +53,7 @@
 	}
 </script>
 
-<form
-	on:submit|preventDefault={handleSubmit}
-	class="w-[280px] sm:w-96 mt-5 shrink"
->
+<form on:submit|preventDefault={login} class="w-[280px] sm:w-96 mt-5 shrink">
 	<div class="space-y-6">
 		<label class="input input-bordered flex items-center gap-2">
 			<input
@@ -68,7 +74,11 @@
 				bind:value={user.password}
 				required
 			/>
-			<button type="button" on:click={togglePasswordVisibility} class=" hover:bg-base-300 rounded-lg p-2">
+			<button
+				type="button"
+				on:click={togglePasswordVisibility}
+				class=" hover:bg-base-300 rounded-lg p-2"
+			>
 				<img
 					src={showPassword ? "eye_opened.svg" : "eye_closed.svg"}
 					class="w-6"

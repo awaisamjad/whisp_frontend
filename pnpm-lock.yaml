@@ -8,12 +8,18 @@ importers:
 
   .:
     dependencies:
+      crypto-js:
+        specifier: ^4.2.0
+        version: 4.2.0
       daisyui:
         specifier: ^4.12.23
         version: 4.12.23(postcss@8.4.49)
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5
+      lucide-svelte:
+        specifier: ^0.474.0
+        version: 0.474.0(svelte@5.17.3)
     devDependencies:
       '@catppuccin/daisyui':
         specifier: ^1.2.1
@@ -30,6 +36,9 @@ importers:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^4.0.0
         version: 4.0.4(svelte@5.17.3)(vite@5.4.11(@types/node@22.10.5))
+      '@types/crypto-js':
+        specifier: ^4.2.2
+        version: 4.2.2
       '@types/js-cookie':
         specifier: ^3.0.6
         version: 3.0.6
@@ -502,6 +511,9 @@ packages:
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
 
+  '@types/crypto-js@4.2.2':
+    resolution: {integrity: sha512-sDOLlVbHhXpAUAL0YHDUUwDZf3iN4Bwi4W6a0W0b+QcAezUbRtH4FVb+9J4h+XFPW7l/gQ9F8qC7P+Ec4k8QVQ==}
+
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
 
@@ -625,6 +637,9 @@ packages:
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
+
+  crypto-js@4.2.0:
+    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
 
   css-selector-tokenizer@0.8.0:
     resolution: {integrity: sha512-Jd6Ig3/pe62/qe5SBPTN8h8LeUg/pT4lLgtavPf7updwwHpvFzxvOQBHYj2LZDMjUnBzgvIUSjRcf6oT5HzHFg==}
@@ -824,6 +839,11 @@ packages:
 
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
+
+  lucide-svelte@0.474.0:
+    resolution: {integrity: sha512-yOSqjXPoEDOXCceBIfDaed6RinOvhp03ShiTXH6O+vlXE/NsyjQpktL8gm2vGDxi9d81HMuPFN1dwhVURh6mGg==}
+    peerDependencies:
+      svelte: ^3 || ^4 || ^5.0.0-next.42
 
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
@@ -1510,6 +1530,8 @@ snapshots:
 
   '@types/cookie@0.6.0': {}
 
+  '@types/crypto-js@4.2.2': {}
+
   '@types/estree@1.0.6': {}
 
   '@types/js-cookie@3.0.6': {}
@@ -1623,6 +1645,8 @@ snapshots:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+
+  crypto-js@4.2.0: {}
 
   css-selector-tokenizer@0.8.0:
     dependencies:
@@ -1808,6 +1832,10 @@ snapshots:
   locate-character@3.0.0: {}
 
   lru-cache@10.4.3: {}
+
+  lucide-svelte@0.474.0(svelte@5.17.3):
+    dependencies:
+      svelte: 5.17.3
 
   magic-string@0.30.17:
     dependencies:
