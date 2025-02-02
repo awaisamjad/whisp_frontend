@@ -1,9 +1,12 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
+    import { Repeat2, Heart, MessageSquare, EllipsisVertical } from "lucide-svelte";
     import type { PostType } from "../app";
 
     let post: PostType = $props();
 
+    const deselected_colour = "#ffffff";
+    const selected_colour = "#99c1f1";
     let liked = $state(false);
     let toggleLike = () => {
         liked = !liked;
@@ -20,7 +23,6 @@
 <!-- svelte-ignore event_directive_deprecated -->
 <div
     class="post-container grid grid-rows-[9fr_1fr] p-2 border-t-2 hover:bg-base-300"
-    
 >
     <div class="grid grid-rows-[auto_1fr]">
         <div
@@ -51,43 +53,43 @@
     </div>
 
     <div id="bottom-bar" class="bg-base-200 flex items-center justify-evenly">
-        <button class="btn btn-secondary btn-xs" on:click|preventDefault>
-            <img src="" alt="" class="w-5" />
-            <p>{post.comment_count}</p>
+        <button
+            class="flex gap-2 p-1 rounded-md outline-1 items-center justify-center hover:bg-base-300"
+            on:click|preventDefault
+        >
+            <MessageSquare size={20} />
+            <p class=" text-lg">{post.comment_count}</p>
         </button>
         <button
-            class="btn btn-secondary btn-xs"
+            class="flex gap-2 p-1 rounded-md outline-1 items-center justify-center hover:bg-base-300"
             on:click|preventDefault={() => toggleRetweet()}
         >
-            <img
-                src={retweeted
-                    ? "/retweet_clicked.svg"
-                    : "/retweet_not_clicked.svg"}
-                alt=""
-                class="w-5"
+            <Repeat2
+                size={20}
+                color={retweeted ? selected_colour : deselected_colour}
             />
-            <p>{post.retweet_count}</p>
+            <p class=" text-lg">{post.retweet_count}</p>
         </button>
         <button
-            class="btn btn-secondary btn-xs"
+            class="flex gap-2 p-1 rounded-md outline-1 items-center justify-center hover:bg-base-300"
             on:click|preventDefault={() => toggleLike()}
         >
-            <img
-                src={liked ? "/heart_clicked.svg" : "/heart_not_clicked.svg"}
-                alt=""
-                class="w-5"
+            <Heart
+                size={20}
+                color={liked ? selected_colour : deselected_colour}
             />
-            <p>{post.like_count}</p>
+
+            <p class=" text-lg">{post.like_count}</p>
         </button>
         <div class="dropdown dropdown-end">
             <!-- svelte-ignore a11y_interactive_supports_focus -->
             <div
                 tabIndex={0}
                 role="button"
-                class="btn m-1 btn-secondary btn-xs"
+                class="flex gap-2 p-1 rounded-md outline-1 items-center justify-center hover:bg-base-300"
                 on:click|preventDefault
             >
-                ...
+                <EllipsisVertical size={20} />
             </div>
             <ul
                 tabIndex={0}

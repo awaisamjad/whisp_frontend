@@ -3,13 +3,12 @@
     import type { PostType } from "../../../app";
     import Post from "../../../components/Post.svelte";
     import type { PageData } from "./$types";
-    import Cookies from "js-cookie";
     
     let { data }: { data: PageData } = $props();
     let posts: PostType[] = $state([]);
 
     let error_message = "";
-    console.log(Cookies.get("user_id"));
+
     onMount(async () => {
         try {
             posts = (await data.posts) || [];
