@@ -10,11 +10,12 @@
 
 	let error_message = $state("");
 	let showSidebar = $state(false);
-	
+
 	const username = Cookies.get("username") || "";
 	const user_id = Cookies.get("user_id") || "";
+
 	// const url = data.url;
-	const url = import.meta.env.VITE_BACKEND_LOCAL_URL;
+
 	let post_content = $state("");
 
 	async function createPost() {
@@ -25,6 +26,7 @@
 				username: username,
 			};
 
+			const url = `${import.meta.env.VITE_BACKEND_LOCAL_URL}/create-post`;
 			const response = await fetch(url, {
 				method: "POST",
 				headers: {
@@ -45,26 +47,11 @@
 	}
 </script>
 
-{#snippet authenticationButtons()}
-	{#if isUserLoggedIn()}
-		<button
-			class="btn btn-error sm:w-32 md:w-40 lg:w-48 xl:w-64 mx-4"
-			onclick={() => signOut()}>Sign Out</button
-		>
-	{:else if !isUserLoggedIn()}
-		<button
-			class="btn btn-accent sm:w-32 md:w-40 lg:w-48 xl:w-64 mx-4"
-			onclick={() => goto("/login")}>Log In</button
-		>
-	{/if}
-{/snippet}
-
 <div
 	id="main"
 	class="grid h-screen grid-rows-[auto_1fr_auto] grid-cols-1
 	sm:grid-rows-[auto_1fr_auto] sm:grid-cols-[1fr_3fr_1fr]
 	{main_background_colour.colour}
-	
 "
 >
 	<nav class="col-span-full grid grid-cols-3 gap-4 p-4 border-b-2">

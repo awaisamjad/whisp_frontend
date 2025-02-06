@@ -1,5 +1,4 @@
 import type { PostType } from "../../../app";
-import { BACKEND_LOCAL_URL } from "$env/static/private";
 import Cookies from "js-cookie";
 
 const auth_token = Cookies.get("auth_token");
@@ -7,7 +6,7 @@ const auth_token = Cookies.get("auth_token");
 export const load = async ({ fetch }) => {
     const getFeed = async () => {
         try {
-            const response = await fetch(`${BACKEND_LOCAL_URL}/posts`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_LOCAL_URL}/posts`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

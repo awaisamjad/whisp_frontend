@@ -1,23 +1,22 @@
 import type { PostType } from "../../../../app.js";
-import { BACKEND_LOCAL_URL } from "$env/static/private";
-import Cookies from "js-cookie";
 
-const auth_token = Cookies.get("auth_token");
-
-export const load = async ({ fetch, params }) => {
+export const load = async ({ fetch, params,cookies }) => {
+    // ! For some reason this displays the username but also the avatar????
     const getUserPosts = async () => {
         try {
-            const response = await fetch(`${BACKEND_LOCAL_URL}/posts`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_LOCAL_URL}/user/${params.username}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${auth_token}`,
+                    Authorization: `Bearer ${cookies.get("auth_token")}`,
                 },
             });
-
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const result = await response.json();
+            console.log(result)
             if (response.ok) {
-
                 const posts = result.posts as PostType[];
                 return posts;
             }

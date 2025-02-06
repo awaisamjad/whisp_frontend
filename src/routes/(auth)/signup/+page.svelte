@@ -27,7 +27,7 @@
 
 	async function handleSubmit(event: Event) {
 		try {
-			const response = await fetch("http://localhost:8000/auth/signup", {
+			const response = await fetch(`${import.meta.env.VITE_BACKEND_LOCAL_URL}/auth/signu`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

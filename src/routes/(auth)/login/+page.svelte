@@ -19,9 +19,8 @@
 	};
 
 	async function login(event: Event) {
-		console.log(data.url);
 		try {
-			const response = await fetch(`${data.url}/auth/login`, {
+			const response = await fetch(`${import.meta.env.VITE_BACKEND_LOCAL_URL}/auth/login`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
