@@ -73,6 +73,7 @@
 				placeholder="Password"
 				bind:value={user.password}
 				required
+				minlength="8"
 			/>
 			<button
 				type="button"

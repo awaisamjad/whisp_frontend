@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
-    import type { SignUpRequest } from "../../../app";
+	import type { SignUpRequest } from "../../../app";
+	import { Eye, EyeClosed } from "lucide-svelte";
 
 	let error_message: string = $state("");
-	let user : SignUpRequest = {
+	let user: SignUpRequest = {
 		first_name: "",
 		last_name: "",
 		username: "",
@@ -84,6 +85,8 @@
 				placeholder="Username"
 				bind:value={user.username}
 				required
+				minlength="3"
+				maxlength="20"
 			/>
 		</label>
 
@@ -112,6 +115,12 @@
 					class="w-7"
 					alt=""
 				/>
+				<!-- ? This (below) selects the text in the field. idky -->
+				<!-- {#if showPassword}
+					<Eye/>
+				{:else}
+					<EyeClosed/>
+				{/if} -->
 			</button>
 		</label>
 

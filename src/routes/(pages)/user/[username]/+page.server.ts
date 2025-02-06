@@ -4,8 +4,8 @@ import Cookies from "js-cookie";
 
 const auth_token = Cookies.get("auth_token");
 
-export const load = async ({ fetch }) => {
-    const getUserPosts = async (query: string) => {
+export const load = async ({ fetch, params }) => {
+    const getUserPosts = async () => {
         try {
             const response = await fetch(`${BACKEND_LOCAL_URL}/posts`, {
                 method: "GET",
@@ -16,10 +16,6 @@ export const load = async ({ fetch }) => {
             });
 
             const result = await response.json();
-
-            console.log("isAuthenticated:", result.isAuthenticated);
-            console.log(result.posts);
-
             if (response.ok) {
 
                 const posts = result.posts as PostType[];
@@ -31,6 +27,6 @@ export const load = async ({ fetch }) => {
     }
 
     return {
-        posts: getUserPosts(""),
+        posts: getUserPosts(),
     }
 }

@@ -1,22 +1,12 @@
 <script lang="ts">
-    import type { PostType } from "../../../../app";
-    import type { PageData } from "./$types";
-    import {
-        MessageSquare,
-        Repeat2,
-        Heart,
-        EllipsisVertical,
-        ArrowLeft,
-    } from "lucide-svelte";
-    import Comment from "../../../../components/Comment.svelte";
+    import { goto } from "$app/navigation";
+    import { Repeat2, Heart, MessageSquare, EllipsisVertical } from "lucide-svelte";
+    import type { PostType } from "../app";
 
-    let { data }: { data: PageData } = $props();
-
-    const post: PostType = data.post_response.post;
+    let post: PostType = $props();
 
     const deselected_colour = "#ffffff";
     const selected_colour = "#99c1f1";
-
     let liked = $state(false);
     let toggleLike = () => {
         liked = !liked;
@@ -26,64 +16,30 @@
     let toggleRetweet = () => {
         retweeted = !retweeted;
     };
-
-    let comments = [
-        {
-            id: 1,
-            user_id: 1,
-            username: "user1",
-            handle: "@user1",
-            text_content: "This is a comment",
-            image_content: "",
-            avatar: "default_avatar.webp",
-            comment_count: 0,
-            retweet_count: 0,
-            like_count: 0,
-            created_at: "2023-10-01T12:00:00Z",
-            updated_at: "2023-10-01T12:00:00Z",
-        },
-        {
-            id: 2,
-            user_id: 2,
-            username: "user2",
-            handle: "@user2",
-            text_content: "This is another comment",
-            image_content: "",
-            avatar: "/default_avatar.webp",
-            comment_count: 0,
-            retweet_count: 0,
-            like_count: 0,
-            created_at: "2023-10-02T12:00:00Z",
-            updated_at: "2023-10-02T12:00:00Z",
-        },
-    ];
 </script>
 
-<button class="p-3 hover:bg-base-300" onclick={() => window.history.back()}>
-    <ArrowLeft />
-</button>
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore event_directive_deprecated -->
 <div
-    class="post-container grid grid-rows-[9fr_1fr] p-2 outline m-2 rounded outline-info"
+    class="post-container grid grid-rows-[9fr_1fr] p-2 hover:bg-base-300"
 >
     <div class="grid grid-rows-[auto_1fr]">
         <div
             class="post-header flex items-center mb-2 bg-base-200 p-2 rounded-sm"
         >
-            <a href="/user/{post.username}">
-                <img
-                    class="avatar w-10 h-10 rounded-full mr-4"
-                    src="/{post.avatar}"
-                    alt={post.username}
-                />
-            </a>
+            <img
+                class="avatar w-10 h-10 rounded-full mr-4"
+                src="/{post.avatar}"
+                alt={post.username}
+                on:click|stopPropagation={() => goto(`/user/${post.username}`)}
+                style="cursor: pointer;"
+            />
             <span class="username font-bold mr-2">{post.username}</span>
             <span class="time text-gray-500">{post.updated_at}</span>
         </div>
 
-        <div id="content">
+        <div id="content" on:click={() => goto(`/posts/${post.id}`)}>
             {post.text_content}
             {#if post.image_content}
                 <img
@@ -98,13 +54,14 @@
     <div id="bottom-bar" class="bg-base-200 flex items-center justify-evenly">
         <button
             class="flex gap-2 p-1 rounded-md outline-1 items-center justify-center hover:bg-base-300"
+            on:click|preventDefault
         >
             <MessageSquare size={20} />
             <p class=" text-lg">{post.comment_count}</p>
         </button>
         <button
             class="flex gap-2 p-1 rounded-md outline-1 items-center justify-center hover:bg-base-300"
-            onclick={() => toggleRetweet()}
+            on:click|preventDefault={() => toggleRetweet()}
         >
             <Repeat2
                 size={20}
@@ -114,7 +71,7 @@
         </button>
         <button
             class="flex gap-2 p-1 rounded-md outline-1 items-center justify-center hover:bg-base-300"
-            onclick={() => toggleLike()}
+            on:click|preventDefault={() => toggleLike()}
         >
             <Heart
                 size={20}
@@ -129,6 +86,7 @@
                 tabIndex={0}
                 role="button"
                 class="flex gap-2 p-1 rounded-md outline-1 items-center justify-center hover:bg-base-300"
+                on:click|preventDefault
             >
                 <EllipsisVertical size={20} />
             </div>
@@ -143,23 +101,4 @@
             </ul>
         </div>
     </div>
-</div>
-
-<!-- TODO Comments below -->
-<div class="flex flex-row flex-wrap items-center justify-evenly">
-    {#each comments as comment}
-        <Comment
-            id={comment.id}
-            user_id={comment.user_id}
-            username={comment.username}
-            text_content={comment.text_content}
-            image_content={comment.image_content}
-            avatar={comment.avatar}
-            comment_count={comment.comment_count}
-            retweet_count={comment.retweet_count}
-            like_count={comment.like_count}
-            created_at={comment.created_at}
-            updated_at={comment.updated_at}
-        />
-    {/each}
 </div>

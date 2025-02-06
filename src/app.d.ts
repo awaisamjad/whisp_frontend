@@ -13,7 +13,6 @@ export type PostType = {
 	id: number;
 	user_id: number;
 	username: string;
-	handle: string;
 	avatar: string;
 	text_content: string;
 	image_content?: string; // Could be extended to an array for multiple images

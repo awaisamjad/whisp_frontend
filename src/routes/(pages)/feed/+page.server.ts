@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 const auth_token = Cookies.get("auth_token");
 
 export const load = async ({ fetch }) => {
-    const getPosts = async (query: string) => {
+    const getFeed = async () => {
         try {
             const response = await fetch(`${BACKEND_LOCAL_URL}/posts`, {
                 method: "GET",
@@ -14,7 +14,10 @@ export const load = async ({ fetch }) => {
                     Authorization: `Bearer ${auth_token}`,
                 },
             });
-
+            console.log("response:", response);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const result = await response.json();
 
             console.log("isAuthenticated:", result.isAuthenticated);
@@ -30,6 +33,6 @@ export const load = async ({ fetch }) => {
     }
 
     return {
-        posts: getPosts(""),
+        posts: getFeed(),
     }
 }

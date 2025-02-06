@@ -1,21 +1,23 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import type { CreatePostRequest } from "../../app";
-    import FileInput from "../../components/FileInput.svelte";
+	import FileInput from "../../components/FileInput.svelte";
 	import { isUserLoggedIn, signOut } from "../../utils.svelte";
 	import { main_background_colour } from "../state.svelte";
 	import Cookies from "js-cookie";
 	import { House, CirclePlus, Settings, X, Menu } from "lucide-svelte";
 	let { data, children } = $props();
+
 	let error_message = $state("");
 	let showSidebar = $state(false);
+	
 	const username = Cookies.get("username") || "";
 	const user_id = Cookies.get("user_id") || "";
-	let url = data.url;
+	console.log(username, user_id)
+	const url = data.url;
 	let post_content = $state("");
 
 	async function createPost() {
-		console.log(post_content);
 		try {
 			let createPostRequest: CreatePostRequest = {
 				content: post_content,
@@ -128,7 +130,7 @@
 						}}
 						class="w-8"
 					>
-					<X size={48} color="#3e9392"/>
+						<X size={48} color="#3e9392" />
 					</button>
 				</div>
 			</div>
@@ -179,7 +181,7 @@
 							></textarea>
 							<p class=" text-error">{error_message}</p>
 							<div class="join w-full">
-								<FileInput/>
+								<FileInput />
 								<button class="btn join-item w-1/3"
 									>Emoji</button
 								>
@@ -216,7 +218,7 @@
 				<button
 					class="btn bg-transparent border-transparent hover:border-transparent hover:bg-base-300 shadow-none hover:bg-transparent"
 				>
-					<Settings size={48}/>
+					<Settings size={48} />
 				</button>
 			</a>
 		{:else}

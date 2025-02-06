@@ -36,7 +36,6 @@
                 style="cursor: pointer;"
             />
             <span class="username font-bold mr-2">{post.username}</span>
-            <span class="handle mr-2 text-accent">{post.handle}</span>
             <span class="time text-gray-500">{post.updated_at}</span>
         </div>
 

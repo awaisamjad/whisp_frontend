@@ -6,7 +6,6 @@ import Cookies from "js-cookie";
 export const load = async ({ cookies }) => {
     // const authToken = Cookies.get("auth_token");
     const authToken = cookies.get("auth_token");
-    console.log(authToken);
     if (!authToken) {
         throw redirect(302, "/feed");
     }
