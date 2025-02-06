@@ -13,8 +13,8 @@
 	
 	const username = Cookies.get("username") || "";
 	const user_id = Cookies.get("user_id") || "";
-	console.log(username, user_id)
-	const url = data.url;
+	// const url = data.url;
+	const url = import.meta.env.VITE_BACKEND_LOCAL_URL;
 	let post_content = $state("");
 
 	async function createPost() {
