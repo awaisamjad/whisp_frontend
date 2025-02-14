@@ -1,12 +1,10 @@
 import type { PostType } from "../../../app";
-import Cookies from "js-cookie";
 
-const auth_token = Cookies.get("auth_token");
-
-export const load = async ({ fetch }) => {
+export const load = async ({ fetch, cookies }) => {
+    const auth_token = cookies.get("auth_token") || "";
     const getFeed = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_LOCAL_URL}/posts`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_LOCAL_URL}/feed`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -14,15 +12,13 @@ export const load = async ({ fetch }) => {
                 },
             });
             console.log("response:", response);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            console.log("headers:", response.headers);
+            // if (!response.ok) {
+            //     throw new Error(`HTTP error! status: ${response.status}`);
+            // }
             const result = await response.json();
-
-            console.log("isAuthenticated:", result.isAuthenticated);
-
+            console.log("result:", result.message);
             if (response.ok) {
-
                 const posts = result.posts as PostType[];
                 return posts;
             }

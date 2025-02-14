@@ -29,3 +29,4 @@ export const load = async ({ fetch, params,cookies }) => {
         posts: getUserPosts(),
     }
 }
+                        

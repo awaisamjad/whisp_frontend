@@ -80,7 +80,7 @@
 				class=" hover:bg-base-300 rounded-lg p-2"
 			>
 				<img
-					src={showPassword ? "eye_opened.svg" : "eye_closed.svg"}
+					src={showPassword ? "/eye_opened.svg" : "/eye_closed.svg"}
 					class="w-6"
 					alt=""
 				/>
