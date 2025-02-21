@@ -15,17 +15,20 @@
 
 	let showPassword = $state(false);
 
-	function togglePasswordVisibility() {
+	function togglePasswordVisibility(event : Event) {
+		event.preventDefault()
 		showPassword = !showPassword;
 	}
 
 	let showConfirmPassword = $state(false);
 
-	function toggleConfirmPasswordVisibility() {
+	function toggleConfirmPasswordVisibility(event : Event) {
+		event.preventDefault()
 		showConfirmPassword = !showConfirmPassword;
 	}
 
 	async function handleSubmit(event: Event) {
+		event.preventDefault()
 		try {
 			const response = await fetch(`${import.meta.env.VITE_BACKEND_LOCAL_URL}/auth/signup`, {
 				method: "POST",
@@ -49,7 +52,7 @@
 </script>
 
 <form
-	on:submit|preventDefault={handleSubmit}
+	onsubmit={handleSubmit}
 	class="rounded-sm w-[280px] sm:w-96"
 >
 	<div class="space-y-6">
@@ -62,6 +65,7 @@
 				placeholder="First Name"
 				bind:value={user.first_name}
 				required
+				minlength="3"
 			/>
 		</label>
 
@@ -73,6 +77,7 @@
 				placeholder="Last Name"
 				bind:value={user.last_name}
 				required
+				minlength="3"
 			/>
 		</label>
 		<!-- </div> -->
@@ -109,18 +114,18 @@
 				bind:value={user.password}
 				required
 			/>
-			<button type="button" on:click={togglePasswordVisibility}>
-				<img
+			<button type="button" onclick={togglePasswordVisibility}>
+				<!-- <img
 					src={showPassword ? "eye_opened.svg" : "eye_closed.svg"}
 					class="w-7"
 					alt=""
-				/>
+				/> -->
 				<!-- ? This (below) selects the text in the field. idky -->
-				<!-- {#if showPassword}
-					<Eye/>
-				{:else}
-					<EyeClosed/>
-				{/if} -->
+					{#if showPassword}
+						<Eye/>
+					{:else}
+						<EyeClosed/>
+					{/if}
 			</button>
 		</label>
 
@@ -132,7 +137,7 @@
 				bind:value={user.confirm_password}
 				required
 			/>
-			<button type="button" on:click={toggleConfirmPasswordVisibility}>
+			<button type="button" onclick={toggleConfirmPasswordVisibility}>
 				<img
 					src={showConfirmPassword
 						? "eye_opened.svg"

@@ -1,13 +1,19 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
+	import { onMount } from "svelte";
 	import type { CreatePostRequest } from "../../app";
 	import FileInput from "../../components/FileInput.svelte";
-	import { isUserLoggedIn, signOut } from "../../utils.svelte";
 	import { main_background_colour } from "../state.svelte";
 	import Cookies from "js-cookie";
 	import { House, CirclePlus, Settings, X, Menu } from "lucide-svelte";
 	let { data, children } = $props();
 
+	let auth_status = $state(false);
+	
+	onMount(() => {
+		auth_status = data.isAuthenticated
+		console.log(data)
+	});
 	let error_message = $state("");
 	let showSidebar = $state(false);
 
@@ -141,7 +147,7 @@
 
 	<!-- svelte-ignore a11y_consider_explicit_label -->
 	<div class="btm-nav border-t-2">
-		{#if isUserLoggedIn()}
+		{#if auth_status}
 			<div class="">
 				<a href="/feed" class="">
 					<House size={48} />
@@ -157,7 +163,7 @@
 				</button>
 				<dialog id="modal" class="modal">
 					<div class="modal-box">
-						{#if isUserLoggedIn()}
+						{#if auth_status}
 							<textarea
 								class="textarea textarea-bordered w-full mb-4 h-32 max-h-32"
 								placeholder="..."

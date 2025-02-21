@@ -1,7 +1,16 @@
 <script lang="ts">
-	import { signOut } from "../../../utils.svelte";
+	import { browser } from "$app/environment";
 	import type { PageData } from "./$types";
 	let { data }: { data: PageData } = $props();
+	import Cookies from "js-cookie";
+	function signOut() {
+		if (browser) {
+			Cookies.remove("auth_token");
+			Cookies.remove("user_id");
+			Cookies.remove("username");
+			window.location.reload();
+		}
+	}
 </script>
 
 <ul>

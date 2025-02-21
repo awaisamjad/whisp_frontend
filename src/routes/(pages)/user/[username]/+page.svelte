@@ -5,9 +5,13 @@
     let { data }: { data: PageData } = $props();
 
 </script>
+<div class="">
+    <h1>Username</h1>
+</div>
 
 {#await data.posts then posts}
-     {#each posts as post}
+    {#if posts}
+        {#each posts as post}
         <Post
             id={post.id }
             user_id={post.user_id}
@@ -22,4 +26,7 @@
             updated_at={post.updated_at}
         />
     {/each}
+    {:else}
+        Create a Post
+    {/if}
 {/await}

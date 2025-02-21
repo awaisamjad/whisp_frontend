@@ -9,7 +9,8 @@
 
 	let showPassword = $state(false);
 
-	function togglePasswordVisibility() {
+	function togglePasswordVisibility(event : Event) {
+		event.preventDefault()
 		showPassword = !showPassword;
 	}
 
@@ -19,6 +20,7 @@
 	};
 
 	async function login(event: Event) {
+		event.preventDefault()
 		try {
 			const response = await fetch(`${import.meta.env.VITE_BACKEND_LOCAL_URL}/auth/login`, {
 				method: "POST",
@@ -52,7 +54,7 @@
 	}
 </script>
 
-<form on:submit|preventDefault={login} class="w-[280px] sm:w-96 mt-5 shrink">
+<form onsubmit={login} class="w-[280px] sm:w-96 mt-5 shrink">
 	<div class="space-y-6">
 		<label class="input input-bordered flex items-center gap-2">
 			<input
@@ -76,7 +78,7 @@
 			/>
 			<button
 				type="button"
-				on:click={togglePasswordVisibility}
+				onclick={togglePasswordVisibility}
 				class=" hover:bg-base-300 rounded-lg p-2"
 			>
 				<img

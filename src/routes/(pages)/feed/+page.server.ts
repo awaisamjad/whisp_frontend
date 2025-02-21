@@ -13,9 +13,6 @@ export const load = async ({ fetch, cookies }) => {
             });
             console.log("response:", response);
             console.log("headers:", response.headers);
-            // if (!response.ok) {
-            //     throw new Error(`HTTP error! status: ${response.status}`);
-            // }
             const result = await response.json();
             console.log("result:", result.message);
             if (response.ok) {
