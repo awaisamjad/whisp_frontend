@@ -1,4 +1,5 @@
-import type { Config } from 'tailwindcss';
+import tailwindcss from "@tailwindcss/vite";
+// import type { Config } from 'tailwindcss';
 import catppuccin from '@catppuccin/daisyui'
 
 export default {
