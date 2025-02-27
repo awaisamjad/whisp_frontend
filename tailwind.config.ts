@@ -14,7 +14,9 @@ export default {
     },
   },
 
-  // plugins: [ require("daisyui")],
+  plugins: [ 
+    tailwindcss()
+  ],
   // daisyui: {
   //   // The top value of this array will be used as the default theme
   //   // You can use https://github.com/saadeghi/theme-change to switch between themes
@@ -32,4 +34,4 @@ export default {
   //     // Fallback to default theme
   //   ],
   // },
-} satisfies Config;
+};

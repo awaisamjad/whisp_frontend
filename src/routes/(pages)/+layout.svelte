@@ -9,10 +9,10 @@
 	let { data, children } = $props();
 
 	let auth_status = $state(false);
-	
+
 	onMount(() => {
-		auth_status = data.isAuthenticated
-		console.log(data)
+		auth_status = data.isAuthenticated;
+		console.log(data);
 	});
 	let error_message = $state("");
 	let showSidebar = $state(false);
@@ -81,8 +81,8 @@
 
 		<!-- Logo -->
 		<div class="col-span-1 sm:col-span-1 flex place-content-center">
-			<a href="/feed" class="text-5xl font-semibold hover:underline">
-				Whisp
+			<a href="/feed" class="font-semibold hover:bg-base-300">
+				<h1>Whisp</h1>
 			</a>
 		</div>
 
@@ -146,7 +146,7 @@
 	></aside>
 
 	<!-- svelte-ignore a11y_consider_explicit_label -->
-	<div class="btm-nav border-t-2">
+	<div class="dock border-t-2">
 		{#if auth_status}
 			<div class="">
 				<a href="/feed" class="">
@@ -172,7 +172,16 @@
 							></textarea>
 							<p class=" text-error">{error_message}</p>
 							<div class="join w-full">
-								<FileInput />
+								<!-- <FileInput /> -->
+								<div class="">
+									<button class="btn">Upload File</button>
+									<input
+										id="fileInput"
+										type="file"
+										style="display: none;"
+										accept="image/*"
+									/>
+								</div>
 								<button class="btn join-item w-1/3"
 									>Emoji</button
 								>

@@ -3,7 +3,6 @@
 	import type { SignUpRequest } from "../../../app";
 	import { Eye, EyeClosed } from "lucide-svelte";
 
-	let error_message: string = $state("");
 	let user: SignUpRequest = {
 		first_name: "",
 		last_name: "",
@@ -13,30 +12,33 @@
 		confirm_password: "",
 	};
 
+	let error_message: string = $state("");
 	let showPassword = $state(false);
+	let showConfirmPassword = $state(false);
 
-	function togglePasswordVisibility(event : Event) {
-		event.preventDefault()
+	function togglePasswordVisibility(event: Event) {
+		event.preventDefault();
 		showPassword = !showPassword;
 	}
 
-	let showConfirmPassword = $state(false);
-
-	function toggleConfirmPasswordVisibility(event : Event) {
-		event.preventDefault()
+	function toggleConfirmPasswordVisibility(event: Event) {
+		event.preventDefault();
 		showConfirmPassword = !showConfirmPassword;
 	}
 
 	async function handleSubmit(event: Event) {
-		event.preventDefault()
+		event.preventDefault();
 		try {
-			const response = await fetch(`${import.meta.env.VITE_BACKEND_LOCAL_URL}/auth/signup`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
+			const response = await fetch(
+				`${import.meta.env.VITE_BACKEND_LOCAL_URL}/auth/signup`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(user),
 				},
-				body: JSON.stringify(user),
-			});
+			);
 			const result = await response.json();
 			if (!response.ok) {
 				error_message = result.error_message || "Something went wrong";
@@ -51,12 +53,8 @@
 	}
 </script>
 
-<form
-	onsubmit={handleSubmit}
-	class="rounded-sm w-[280px] sm:w-96"
->
+<form onsubmit={handleSubmit} class="w-[280px]">
 	<div class="space-y-6">
-		<!-- <div class="flex flex-row items-center justify-center gap-2"> -->
 		<label class="input input-bordered flex items-center gap-2">
 			<input
 				type="text"
@@ -115,17 +113,11 @@
 				required
 			/>
 			<button type="button" onclick={togglePasswordVisibility}>
-				<!-- <img
-					src={showPassword ? "eye_opened.svg" : "eye_closed.svg"}
-					class="w-7"
-					alt=""
-				/> -->
-				<!-- ? This (below) selects the text in the field. idky -->
-					{#if showPassword}
-						<Eye/>
-					{:else}
-						<EyeClosed/>
-					{/if}
+				{#if showPassword}
+					<Eye />
+				{:else}
+					<EyeClosed />
+				{/if}
 			</button>
 		</label>
 
@@ -138,13 +130,11 @@
 				required
 			/>
 			<button type="button" onclick={toggleConfirmPasswordVisibility}>
-				<img
-					src={showConfirmPassword
-						? "eye_opened.svg"
-						: "eye_closed.svg"}
-					class="w-7"
-					alt=""
-				/>
+				{#if showConfirmPassword}
+					<Eye />
+				{:else}
+					<EyeClosed />
+				{/if}
 			</button>
 		</label>
 

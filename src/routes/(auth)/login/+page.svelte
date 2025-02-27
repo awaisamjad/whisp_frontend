@@ -4,31 +4,40 @@
 	import type { LogInRequest, LogInResponse } from "../../../app";
 	import type { PageData } from "./$types";
 	import { setEncryptedCookie } from "$lib/utils";
-	let { data }: { data: PageData } = $props();
-	let error_message = $state("");
-
-	let showPassword = $state(false);
-
-	function togglePasswordVisibility(event : Event) {
-		event.preventDefault()
-		showPassword = !showPassword;
-	}
+	import { Eye, EyeClosed } from "lucide-svelte";
 
 	let user: LogInRequest = {
 		email: "",
 		password: "",
 	};
 
+	let error_message = $state("");
+	let showPassword = $state(false);
+	let showConfirmPassword = $state(false);
+
+	function togglePasswordVisibility(event: Event) {
+		event.preventDefault();
+		showPassword = !showPassword;
+	}
+
+	function toggleConfirmPasswordVisibility(event: Event) {
+		event.preventDefault();
+		showConfirmPassword = !showConfirmPassword;
+	}
+
 	async function login(event: Event) {
-		event.preventDefault()
+		event.preventDefault();
 		try {
-			const response = await fetch(`${import.meta.env.VITE_BACKEND_LOCAL_URL}/auth/login`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
+			const response = await fetch(
+				`${import.meta.env.VITE_BACKEND_LOCAL_URL}/auth/login`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(user),
 				},
-				body: JSON.stringify(user),
-			});
+			);
 
 			const result: LogInResponse = await response.json();
 			if (response.ok) {
@@ -40,7 +49,7 @@
 				Cookies.set("username", result.username, { expires: 30 });
 				Cookies.set("auth_token", result.auth_token, { expires: 30 });
 				Cookies.set("user_id", String(result.user_id), { expires: 30 });
-				Cookies.set("avatar", result.avatar, {expires : 30});				
+				Cookies.set("avatar", result.avatar, { expires: 30 });
 				goto(`/feed`);
 			} else {
 				//? Keep the error message vague
@@ -49,12 +58,12 @@
 			}
 		} catch (error) {
 			error_message = "Failed to connect to the server";
-			console.error("Error during log-in:", error);
+			console.error("Error during login:", error);
 		}
 	}
 </script>
 
-<form onsubmit={login} class="w-[280px] sm:w-96 mt-5 shrink">
+<form onsubmit={login} class="w-[280px]">
 	<div class="space-y-6">
 		<label class="input input-bordered flex items-center gap-2">
 			<input
@@ -81,11 +90,11 @@
 				onclick={togglePasswordVisibility}
 				class=" hover:bg-base-300 rounded-lg p-2"
 			>
-				<img
-					src={showPassword ? "/eye_opened.svg" : "/eye_closed.svg"}
-					class="w-6"
-					alt=""
-				/>
+				{#if showPassword}
+					<Eye />
+				{:else}
+					<EyeClosed />
+				{/if}
 			</button>
 		</label>
 		<p class="text-red-500">{error_message}</p>
